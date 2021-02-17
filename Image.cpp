@@ -1,13 +1,20 @@
 #include "Image.hpp"
+#include <iostream>
 
 Image::Image(int width, int height){
     this->width = width;
     this->height = height;
+    this->matriks = int* [height];
+    for (int i = 0; i < this->height; i ++)
+    {
+        this->matriks[i] = new int[this->width ];
+    
+    }
 }
 
-// Image :: ~Image(){
-
-// }
+Image :: ~Image(){
+    
+}
 
 int Image::getWidth()
 {

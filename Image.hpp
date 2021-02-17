@@ -7,6 +7,7 @@ class Image
         //atribute
         int width;
         int height;
+        int **matriks;
 
     public:
         //constructor
