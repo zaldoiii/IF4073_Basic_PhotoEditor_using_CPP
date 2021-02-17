@@ -19,9 +19,11 @@ class Image
         //method 
         int getWidth();
         int getHeight();
+        int** getMatriks();
         
         void setWidth(int w);
         void setHeight(int h);
+        void setMatriks(int **mat)
 
 };
 #endif
