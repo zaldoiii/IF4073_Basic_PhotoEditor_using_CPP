@@ -3,24 +3,23 @@
 #include<iostream>
 using namespace std;
 
-typedef struct {
-     unsigned char red,green,blue;
+typedef struct foo
+{
+    unsigned char x;
 } PPMPixel;
 
 typedef struct {
      int x, y;
      PPMPixel *data;
-} PPMImage;
+} PBMImage;
 
-#define RGB_COMPONENT_COLOR 255
-
-static PPMImage *readPPM(const char *filename)
+static PBMImage *readPBM(const char *filename)
 {
          char buff[16];
-         PPMImage *img;
+         PBMImage *img;
          FILE *fp;
-         int c, rgb_comp_color;
-         //open PPM file for reading
+         int c;
+         //open PBM file for reading
          fp = fopen(filename, "rb");
          if (!fp) {
               cout<<"Unable to open file '%s'\n";
@@ -34,13 +33,13 @@ static PPMImage *readPPM(const char *filename)
          }
 
     //check the image format
-    if (buff[0] != 'P' || buff[1] != '6') {
-         cout<<"Invalid image format must be PPM\n";
+    if (buff[0] != 'P' || buff[1] != '4') {
+         cout<<"Invalid image format must be PBM\n";
          exit(1);
     }
 
     //alloc memory form image
-    img = (PPMImage *)malloc(sizeof(PPMImage));
+    img = (PBMImage *)malloc(sizeof(PBMImage));
     if (!img) {
          cout<<"Unable to allocate memory\n";
          exit(1);
@@ -60,18 +59,6 @@ static PPMImage *readPPM(const char *filename)
          exit(1);
     }
 
-    //read rgb component
-    if (fscanf(fp, "%d", &rgb_comp_color) != 1) {
-         cout<<"Invalid rgb component (error loading '%s')\n";
-         exit(1);
-    }
-
-    //check rgb component depth
-    if (rgb_comp_color!= RGB_COMPONENT_COLOR) {
-         cout<<"'%s' does not have 8-bits components\n";
-         exit(1);
-    }
-
     while (fgetc(fp) != '\n') ;
     //memory allocation for pixel data
     img->data = (PPMPixel*)malloc(img->x * img->y * sizeof(PPMPixel));
@@ -82,17 +69,18 @@ static PPMImage *readPPM(const char *filename)
     }
 
     //read pixel data from file
-    if (fread(img->data, 3 * img->x, img->y, fp) != img->y) {
+    cout<<sizeof(PPMPixel);
+    if (fread(img->data, img->x, img->y, fp) != img->y) {
          cout<<"Error loading image '%s'\n";
-         exit(1);
+        //  exit(1);
     }
 
     fclose(fp);
     return img;
 }
 
-//Save File to PPM
-void writePPM(const char *filename, PPMImage *img)
+//Save File to PBM
+void writePBM(const char *filename, PBMImage *img)
 {
     FILE *fp;
     //open file for output
@@ -104,41 +92,35 @@ void writePPM(const char *filename, PPMImage *img)
 
     //write the header file
     //image format
-    fprintf(fp, "P6\n");
+    fprintf(fp, "P4\n");
 
     //image size
     fprintf(fp, "%d %d\n",img->x,img->y);
     cout<<"Size: "<<img->x<<"x"<<img->y<<"\n";
 
-    // rgb component depth
-    fprintf(fp, "%d\n",RGB_COMPONENT_COLOR);
-    cout<<RGB_COMPONENT_COLOR<<"\n";
-
     // pixel data
-    fwrite(img->data, 3 * img->x, img->y, fp);
+    fwrite(img->data, img->x, img->y, fp);
     
     fclose(fp);
 }
 
-void changeColorPPM(PPMImage *img)
+void changeColorPBM(PBMImage *img)
 {
     int i;
     if(img){
 
          for(i=0;i<img->x*img->y;i++){
-              img->data[i].red=img->data[i].red;
-              img->data[i].green=img->data[i].green;
-              img->data[i].blue=img->data[i].blue;
+              img->data[i].x = 1;
          }
     }
 }
 
 int main(){
-    PPMImage *image;
-    image = readPPM("ppm_sample.ppm");
-    changeColorPPM(image);
+    PBMImage *image;
+    image = readPBM("pbm_sample.pbm");
+    changeColorPBM(image);
 
-    writePPM("ppm_result.ppm",image);
+    writePBM("pbm_result.pbm",image);
     cout<<"Press any key...";
     getchar();
 }

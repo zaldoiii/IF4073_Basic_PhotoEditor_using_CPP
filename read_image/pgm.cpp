@@ -4,23 +4,19 @@
 using namespace std;
 
 typedef struct {
-     unsigned char red,green,blue;
-} PPMPixel;
-
-typedef struct {
      int x, y;
-     PPMPixel *data;
-} PPMImage;
+     unsigned char *data;
+} PGMImage;
 
 #define RGB_COMPONENT_COLOR 255
 
-static PPMImage *readPPM(const char *filename)
+static PGMImage *readPGM(const char *filename)
 {
          char buff[16];
-         PPMImage *img;
+         PGMImage *img;
          FILE *fp;
          int c, rgb_comp_color;
-         //open PPM file for reading
+         //open PGM file for reading
          fp = fopen(filename, "rb");
          if (!fp) {
               cout<<"Unable to open file '%s'\n";
@@ -34,13 +30,13 @@ static PPMImage *readPPM(const char *filename)
          }
 
     //check the image format
-    if (buff[0] != 'P' || buff[1] != '6') {
-         cout<<"Invalid image format must be PPM\n";
+    if (buff[0] != 'P' || buff[1] != '5') {
+         cout<<"Invalid image format must be PGM\n";
          exit(1);
     }
 
     //alloc memory form image
-    img = (PPMImage *)malloc(sizeof(PPMImage));
+    img = (PGMImage *)malloc(sizeof(PGMImage));
     if (!img) {
          cout<<"Unable to allocate memory\n";
          exit(1);
@@ -74,7 +70,7 @@ static PPMImage *readPPM(const char *filename)
 
     while (fgetc(fp) != '\n') ;
     //memory allocation for pixel data
-    img->data = (PPMPixel*)malloc(img->x * img->y * sizeof(PPMPixel));
+    img->data = (unsigned char*)malloc(img->x * img->y * sizeof(unsigned char));
 
     if (!img) {
          cout<<"Unable to allocate memory\n";
@@ -82,7 +78,7 @@ static PPMImage *readPPM(const char *filename)
     }
 
     //read pixel data from file
-    if (fread(img->data, 3 * img->x, img->y, fp) != img->y) {
+    if (fread(img->data, img->x, img->y, fp) != img->y) {
          cout<<"Error loading image '%s'\n";
          exit(1);
     }
@@ -91,8 +87,8 @@ static PPMImage *readPPM(const char *filename)
     return img;
 }
 
-//Save File to PPM
-void writePPM(const char *filename, PPMImage *img)
+//Save File to PGM
+void writePGM(const char *filename, PGMImage *img)
 {
     FILE *fp;
     //open file for output
@@ -104,7 +100,7 @@ void writePPM(const char *filename, PPMImage *img)
 
     //write the header file
     //image format
-    fprintf(fp, "P6\n");
+    fprintf(fp, "P5\n");
 
     //image size
     fprintf(fp, "%d %d\n",img->x,img->y);
@@ -115,30 +111,28 @@ void writePPM(const char *filename, PPMImage *img)
     cout<<RGB_COMPONENT_COLOR<<"\n";
 
     // pixel data
-    fwrite(img->data, 3 * img->x, img->y, fp);
+    fwrite(img->data, img->x, img->y, fp);
     
     fclose(fp);
 }
 
-void changeColorPPM(PPMImage *img)
+void changeColorPGM(PGMImage *img)
 {
     int i;
     if(img){
 
          for(i=0;i<img->x*img->y;i++){
-              img->data[i].red=img->data[i].red;
-              img->data[i].green=img->data[i].green;
-              img->data[i].blue=img->data[i].blue;
+              img->data[i] = 128;
          }
     }
 }
 
 int main(){
-    PPMImage *image;
-    image = readPPM("ppm_sample.ppm");
-    changeColorPPM(image);
+    PGMImage *image;
+    image = readPGM("pgm_sample.pgm");
+    changeColorPGM(image);
 
-    writePPM("ppm_result.ppm",image);
+    writePGM("pgm_result.pgm",image);
     cout<<"Press any key...";
     getchar();
 }
