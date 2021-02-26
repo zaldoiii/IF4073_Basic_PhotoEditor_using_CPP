@@ -62,7 +62,7 @@ class Image
 class Grayscale:public Image {
     public:
         // attribute
-        int **matriks;
+        unsigned char **matriks;
 
         //contructor
         Grayscale(){ 
@@ -70,9 +70,9 @@ class Grayscale:public Image {
         } 
 
         Grayscale(int numRows, int numCols, int grayLevels):Image(numRows, numCols, grayLevels){ 
-            this->matriks = new int*[this->rows];
+            this->matriks = new unsigned char*[this->rows];
             for (int i = 0; i < this->rows; i++) {
-                this->matriks[i] = new int[this->cols];
+                this->matriks[i] = new unsigned char[this->cols];
                 for (int j = 0; j < this->cols; j++) {
                     this->matriks[i][j] = 0;
                 }
@@ -91,15 +91,15 @@ class Grayscale:public Image {
             delete this->matriks;
         }
 
-        int getCell(int i, int j){
+        unsigned char getCell(int i, int j){
             return this->matriks[i][j];
         }
         
-        void setCell(int i, int j, int val){
+        void setCell(int i, int j, unsigned char val){
             this->matriks[i][j] = val;
         }
 
-        int **getMatriks(){
+        unsigned char **getMatriks(){
             return this->matriks;
         }
 
@@ -117,7 +117,7 @@ class Grayscale:public Image {
 class ColoredImg:public Image {
     public:
         // attribute
-        int ***matriks;
+        unsigned char ***matriks;
 
         //contructor
         ColoredImg(){ 
@@ -125,12 +125,12 @@ class ColoredImg:public Image {
         } 
 
         ColoredImg(int numRows, int numCols, int grayLevels):Image(numRows, numCols, grayLevels){ 
-            this->matriks = new int**[3];
+            this->matriks = new unsigned char**[3];
 
             for (int i = 0; i < 3; i++){
-                this->matriks[i] = new int*[this->rows];
+                this->matriks[i] = new unsigned char*[this->rows];
                 for (int j = 0; j < this->rows; j++) {
-                    this->matriks[i][j] = new int[this->cols];
+                    this->matriks[i][j] = new unsigned char[this->cols];
                     for (int k = 0; k < this->cols; k++) {
                         this->matriks[i][j][k] = 0;
                     }
@@ -153,15 +153,15 @@ class ColoredImg:public Image {
             delete[] this->matriks;
         }
 
-        int getCell(int i, int j, int k){
+        unsigned char getCell(int i, int j, int k){
             return this->matriks[i][j][k];
         }
         
-        void setCell(int i, int j, int k, int val){
+        void setCell(int i, int j, int k, unsigned char val){
             this->matriks[i][j][k] = val;
         }
 
-        int ***getMatriks(){
+        unsigned char ***getMatriks(){
             return this->matriks;
         }
 
@@ -178,17 +178,17 @@ class ColoredImg:public Image {
         }
 };
 
-int main() {
-    cout << "Testing" << endl; 
+// int main() {
+//     cout << "Testing" << endl; 
 
-    Grayscale gray(3,2,3);
-    cout << gray.getRows() << endl; 
-    gray.setCell(1,1,10);
-    gray.printMatriks();
+//     Grayscale gray(3,2,3);
+//     cout << gray.getRows() << endl; 
+//     gray.setCell(1,1,10);
+//     gray.printMatriks();
 
-    ColoredImg clr(4,2,3);
-    cout << clr.getRows() << endl; 
-    clr.printMatriks();
+//     ColoredImg clr(4,2,3);
+//     cout << clr.getRows() << endl; 
+//     clr.printMatriks();
     
-    return 0; 
-};
+//     return 0; 
+// };
