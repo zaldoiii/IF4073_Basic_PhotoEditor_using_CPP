@@ -327,19 +327,18 @@ Grayscale discardBackgroundGrayLevelSlicing(Grayscale img, int a, int b, unsigne
 /*
 function to convert decimal to binary 
 */
-int* decToBinary(int n) 
-{ 
-    int* binaryNum = new int[8];
-    int i = 0; 
+// int* decToBinary(int n)  { 
+//     int* binaryNum = new int[8];
+//     int i = 0; 
 
-    while (n > 0) { 
-        binaryNum[i] = n % 2; 
-        n = n / 2; 
-        i++; 
-    } 
+//     while (n > 0) { 
+//         binaryNum[i] = n % 2; 
+//         n = n / 2; 
+//         i++; 
+//     } 
 
-    return binaryNum;
-} 
+//     return binaryNum;
+// } 
 
 /*
 Function for Bit Plane Slicing
@@ -351,12 +350,21 @@ Grayscale bitPlaneSlicing(Grayscale img, int plane){
 
     for (int i = 0; i < img.getRows(); i++) {
         for (int j = 0; j < img.getCols(); j++) {
-            if(decToBinary(img.getCell(i,j))[7-plane])    {
-                result_img.setCell(i,j,255);
+            // if(decToBinary(img.getCell(i,j))[7-plane])    {
+            //     result_img.setCell(i,j,255);
+            // }
+            // else{
+            //     result_img.setCell(i,j,0);
+            // }
+            unsigned char res = img.getCell(i,j);
+            unsigned char t = 128;
+            for(int b = 7; b>plane; b--)    {
+                if(res-t>0)   {
+                    res = res-t;
+                }
+                t = t/2;
             }
-            else{
-                result_img.setCell(i,j,0);
-            }
+            result_img.setCell(i,j,res);
         }
     }
     return result_img;
@@ -364,5 +372,5 @@ Grayscale bitPlaneSlicing(Grayscale img, int plane){
 
 int main(){
     Grayscale image = readPGM("pgm_sample.pgm");
-    writePGM("new.pgm",zoomIn(image));
+    writePGM("new.pgm",bitPlaneSlicing(image,3));
 }
