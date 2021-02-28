@@ -4,6 +4,61 @@
 using namespace std;
 
 /*
+Function citra negatif
+*/
+Grayscale negatif(Grayscale img){
+    Grayscale result_img(img.getRows(),img.getCols(),img.getGray());
+
+    for (int i = 0; i < result_img.getRows(); i++) {
+        for (int j = 0; j < result_img.getCols(); j++) {
+            result_img.setCell(i,j,img.getGray() - img.getCell(i,j));
+        }
+    }
+    return result_img;
+}
+
+/*
+Function convert colored img to grayscale
+*/
+Grayscale convert_to_grayscale(ColoredImg img){
+    Grayscale result_img(img.getRows(),img.getCols(),img.getGray());
+
+    for (int i = 0; i < result_img.getRows(); i++) {
+        for (int j = 0; j < result_img.getCols(); j++) {
+            result_img.setCell(i,j,(img.getCell(0,i,j) + img.getCell(1,i,j) + img.getCell(2,i,j))/3);
+        }
+    }
+    return result_img;
+}
+
+/*
+Function brightening
+option :
+    0 : addition
+    1 : substract
+    2 : multiply
+    3 : division
+*/
+Grayscale brightening(Grayscale img, int option, int scale){
+    Grayscale result_img(img.getRows(),img.getCols(),img.getGray());
+
+    for (int i = 0; i < result_img.getRows(); i++) {
+        for (int j = 0; j < result_img.getCols(); j++) {
+            if (option == 0){
+                result_img.setCell(i,j,img.getCell(i,j) + scale);
+            } else if (option == 1){
+                result_img.setCell(i,j,img.getCell(i,j) - scale);
+            } else if (option == 2){
+                result_img.setCell(i,j,img.getCell(i,j)*scale);
+            } else if (option == 3){
+                result_img.setCell(i,j,img.getCell(i,j)/scale);
+            }
+        }
+    }
+    return result_img;
+}
+
+/*
 Function for Addition
 Adding two images into a new image
 */
