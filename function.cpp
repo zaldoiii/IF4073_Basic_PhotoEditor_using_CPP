@@ -6,30 +6,30 @@ using namespace std;
 /*
 Function citra negatif
 */
-Grayscale negatif(Grayscale img){
-    Grayscale result_img(img.getRows(),img.getCols(),img.getGray());
+// Image negatif(Image img){
+//     Image result_img(img.getRows(),img.getCols(),img.getGray());
 
-    for (int i = 0; i < result_img.getRows(); i++) {
-        for (int j = 0; j < result_img.getCols(); j++) {
-            result_img.setCell(i,j,img.getGray() - img.getCell(i,j));
-        }
-    }
-    return result_img;
-}
+//     for (int i = 0; i < result_img.getRows(); i++) {
+//         for (int j = 0; j < result_img.getCols(); j++) {
+//             result_img.setCell(i,j,img.getGray() - img.getCell(i,j));
+//         }
+//     }
+//     return result_img;
+// }
 
 /*
-Function convert colored img to grayscale
+Function convert colored img to Image
 */
-Grayscale convert_to_grayscale(ColoredImg img){
-    Grayscale result_img(img.getRows(),img.getCols(),img.getGray());
+// Image convert_to_Image(Image img){
+//     Image result_img(img.getRows(),img.getCols(),img.getGray());
 
-    for (int i = 0; i < result_img.getRows(); i++) {
-        for (int j = 0; j < result_img.getCols(); j++) {
-            result_img.setCell(i,j,(img.getCell(0,i,j) + img.getCell(1,i,j) + img.getCell(2,i,j))/3);
-        }
-    }
-    return result_img;
-}
+//     for (int i = 0; i < result_img.getRows(); i++) {
+//         for (int j = 0; j < result_img.getCols(); j++) {
+//             result_img.setCell(i,j,(img.getCell(0,i,j) + img.getCell(1,i,j) + img.getCell(2,i,j))/3);
+//         }
+//     }
+//     return result_img;
+// }
 
 /*
 Function brightening
@@ -39,42 +39,44 @@ option :
     2 : multiply
     3 : division
 */
-Grayscale brightening(Grayscale img, int option, int scale){
-    Grayscale result_img(img.getRows(),img.getCols(),img.getGray());
+// Image brightening(Image img, int option, int scale){
+//     Image result_img(img.getRows(),img.getCols(),img.getGray());
 
-    for (int i = 0; i < result_img.getRows(); i++) {
-        for (int j = 0; j < result_img.getCols(); j++) {
-            if (option == 0){
-                result_img.setCell(i,j,img.getCell(i,j) + scale);
-            } else if (option == 1){
-                result_img.setCell(i,j,img.getCell(i,j) - scale);
-            } else if (option == 2){
-                result_img.setCell(i,j,img.getCell(i,j)*scale);
-            } else if (option == 3){
-                result_img.setCell(i,j,img.getCell(i,j)/scale);
-            }
-        }
-    }
-    return result_img;
-}
+//     for (int i = 0; i < result_img.getRows(); i++) {
+//         for (int j = 0; j < result_img.getCols(); j++) {
+//             if (option == 0){
+//                 result_img.setCell(i,j,img.getCell(i,j) + scale);
+//             } else if (option == 1){
+//                 result_img.setCell(i,j,img.getCell(i,j) - scale);
+//             } else if (option == 2){
+//                 result_img.setCell(i,j,img.getCell(i,j)*scale);
+//             } else if (option == 3){
+//                 result_img.setCell(i,j,img.getCell(i,j)/scale);
+//             }
+//         }
+//     }
+//     return result_img;
+// }
 
 /*
 Function for Addition
 Adding two images into a new image
 */
-Grayscale addition(Grayscale img_1, Grayscale img_2){
-    Grayscale result_img(img_1.getRows(),img_1.getCols(),img_1.getGray());
+Image addition(Image img_1, Image img_2){
+    Image result_img(img_1.getRows(),img_1.getCols(),img_1.getGray(),img_1.getType());
     unsigned char temp;
 
-    for (int i = 0; i < result_img.getRows(); i++) {
-        for (int j = 0; j < result_img.getCols(); j++) {
-            temp = img_1.getCell(i,j) + img_2.getCell(i,j);
+    for (int k = 0; k < 3; k++) {
+        for (int i = 0; i < result_img.getRows(); i++) {
+            for (int j = 0; j < result_img.getCols(); j++) {
+                temp = img_1.getCell(k,i,j) + img_2.getCell(k,i,j);
 
-            if (temp>result_img.getGray())   {
-                result_img.setCell(i,j,result_img.getGray());
-            }
-            else    {
-                result_img.setCell(i,j,temp);
+                if (temp>result_img.getGray())   {
+                    result_img.setCell(k,i,j,result_img.getGray());
+                }
+                else    {
+                    result_img.setCell(k,i,j,temp);
+                }
             }
         }
     }
@@ -85,19 +87,21 @@ Grayscale addition(Grayscale img_1, Grayscale img_2){
 Function for Substraction
 Subtract first image with second image into a new image
 */
-Grayscale substraction(Grayscale img_1, Grayscale img_2){
-    Grayscale result_img(img_1.getRows(),img_1.getCols(),img_1.getGray());
+Image substraction(Image img_1, Image img_2){
+    Image result_img(img_1.getRows(),img_1.getCols(),img_1.getGray(),img_1.getType());
     unsigned char temp;
 
-    for (int i = 0; i < result_img.getRows(); i++) {
-        for (int j = 0; j < result_img.getCols(); j++) {
-            temp = img_1.getCell(i,j) - img_2.getCell(i,j);
+    for (int k = 0; k < 3; k++) {
+        for (int i = 0; i < result_img.getRows(); i++) {
+            for (int j = 0; j < result_img.getCols(); j++) {
+                temp = img_1.getCell(k,i,j) - img_2.getCell(k,i,j);
 
-            if (temp!=0)   {
-                result_img.setCell(i,j,result_img.getGray());
-            }
-            else    {
-                result_img.setCell(i,j,0);
+                if (temp!=0)   {
+                    result_img.setCell(k,i,j,result_img.getGray());
+                }
+                else    {
+                    result_img.setCell(k,i,j,0);
+                }
             }
         }
     }
@@ -108,12 +112,14 @@ Grayscale substraction(Grayscale img_1, Grayscale img_2){
 Function for AND Operation
 Apply AND operation for first image against second image
 */
-Grayscale ANDOperation(Grayscale img_1, Grayscale img_2){
-    Grayscale result_img(img_1.getRows(),img_1.getCols(),img_1.getGray());
+Image ANDOperation(Image img_1, Image img_2){
+    Image result_img(img_1.getRows(),img_1.getCols(),img_1.getGray(),img_1.getType());
 
-    for (int i = 0; i < result_img.getRows(); i++) {
-        for (int j = 0; j < result_img.getCols(); j++) {
-            result_img.setCell(i,j,img_1.getCell(i,j) & img_2.getCell(i,j));
+    for (int k = 0; k < 3; k++) {
+        for (int i = 0; i < result_img.getRows(); i++) {
+            for (int j = 0; j < result_img.getCols(); j++) {
+                result_img.setCell(k,i,j,img_1.getCell(k,i,j) & img_2.getCell(k,i,j));
+            }
         }
     }
     return result_img;
@@ -123,12 +129,14 @@ Grayscale ANDOperation(Grayscale img_1, Grayscale img_2){
 Function for OR Operation
 Apply OR operation for first image against second image
 */
-Grayscale OROperation(Grayscale img_1, Grayscale img_2){
-    Grayscale result_img(img_1.getRows(),img_1.getCols(),img_1.getGray());
+Image OROperation(Image img_1, Image img_2){
+    Image result_img(img_1.getRows(),img_1.getCols(),img_1.getGray(),img_1.getType());
 
-    for (int i = 0; i < result_img.getRows(); i++) {
-        for (int j = 0; j < result_img.getCols(); j++) {
-            result_img.setCell(i,j,img_1.getCell(i,j) | img_2.getCell(i,j));
+    for (int k = 0; k < 3; k++) {
+        for (int i = 0; i < result_img.getRows(); i++) {
+            for (int j = 0; j < result_img.getCols(); j++) {
+                result_img.setCell(k,i,j,img_1.getCell(k,i,j) | img_2.getCell(k,i,j));
+            }
         }
     }
     return result_img;
@@ -138,12 +146,14 @@ Grayscale OROperation(Grayscale img_1, Grayscale img_2){
 Function for XOR Operation
 Apply XOR operation for first image against second image
 */
-Grayscale XOROperation(Grayscale img_1, Grayscale img_2){
-    Grayscale result_img(img_1.getRows(),img_1.getCols(),img_1.getGray());
+Image XOROperation(Image img_1, Image img_2){
+    Image result_img(img_1.getRows(),img_1.getCols(),img_1.getGray(),img_1.getType());
 
-    for (int i = 0; i < result_img.getRows(); i++) {
-        for (int j = 0; j < result_img.getCols(); j++) {
-            result_img.setCell(i,j,img_1.getCell(i,j) ^ img_2.getCell(i,j));
+    for (int k = 0; k < 3; k++) {
+        for (int i = 0; i < result_img.getRows(); i++) {
+            for (int j = 0; j < result_img.getCols(); j++) {
+                result_img.setCell(k,i,j,img_1.getCell(k,i,j) ^ img_2.getCell(k,i,j));
+            }
         }
     }
     return result_img;
@@ -153,12 +163,14 @@ Grayscale XOROperation(Grayscale img_1, Grayscale img_2){
 Function for NOT Operation
 Apply NOT operation for an image
 */
-Grayscale NOTOperation(Grayscale img_1){
-    Grayscale result_img(img_1.getRows(),img_1.getCols(),img_1.getGray());
+Image NOTOperation(Image img_1){
+    Image result_img(img_1.getRows(),img_1.getCols(),img_1.getGray(),img_1.getType());
 
-    for (int i = 0; i < result_img.getRows(); i++) {
-        for (int j = 0; j < result_img.getCols(); j++) {
-            result_img.setCell(i,j,~img_1.getCell(i,j));
+    for (int k = 0; k < 3; k++) {
+        for (int i = 0; i < result_img.getRows(); i++) {
+            for (int j = 0; j < result_img.getCols(); j++) {
+                result_img.setCell(k,i,j,~img_1.getCell(k,i,j));
+            }
         }
     }
     return result_img;
@@ -170,16 +182,18 @@ Apply translation operation for an image
 int m : translation distance in horizontal axis
 int n : translation distance in vertical axis
 */
-Grayscale translation(Grayscale img_1,int m, int n){
-    Grayscale result_img(img_1.getRows(),img_1.getCols(),img_1.getGray());
+Image translation(Image img_1,int m, int n){
+    Image result_img(img_1.getRows(),img_1.getCols(),img_1.getGray(),img_1.getType());
 
-    for (int i = 0; i < result_img.getRows(); i++) {
-        for (int j = 0; j < result_img.getCols(); j++) {
-            if((i-m >= 0) && (j-n >= 0))    {
-                result_img.setCell(i,j,img_1.getCell(i-m,j-n));
-            }
-            else{
-                result_img.setCell(i,j,0);
+    for (int k = 0; k < 3; k++) {
+        for (int i = 0; i < result_img.getRows(); i++) {
+            for (int j = 0; j < result_img.getCols(); j++) {
+                if((i-m >= 0) && (j-n >= 0))    {
+                    result_img.setCell(k,i,j,img_1.getCell(k,i-m,j-n));
+                }
+                else{
+                    result_img.setCell(k,i,j,0);
+                }
             }
         }
     }
@@ -190,17 +204,19 @@ Grayscale translation(Grayscale img_1,int m, int n){
 Function for Rotation 90 Counterclockwise
 Apply rotation 90 degrees counterclockwise for an image 
 */
-Grayscale rotation90CCW(Grayscale img_1){
-    Grayscale result_img(img_1.getCols(),img_1.getRows(),img_1.getGray());
+Image rotation90CCW(Image img_1){
+    Image result_img(img_1.getCols(),img_1.getRows(),img_1.getGray(),img_1.getType());
     int k;
 
-    for (int i=0; i<=img_1.getRows()-1; i++)
-    {
-        k = img_1.getCols() - 1;
-        for (int j=0; j<=img_1.getCols()-1; j++)
+    for (int l = 0; l < 3; l++) {
+        for (int i=0; i<=img_1.getRows()-1; i++)
         {
-            result_img.setCell(k,i,img_1.getCell(i,j));
-            k--;
+            k = img_1.getCols() - 1;
+            for (int j=0; j<=img_1.getCols()-1; j++)
+            {
+                result_img.setCell(l,k,i,img_1.getCell(l,i,j));
+                k--;
+            }
         }
     }
     return result_img;
@@ -210,19 +226,19 @@ Grayscale rotation90CCW(Grayscale img_1){
 Function for Rotation 90 Clockwise
 Apply rotation 90 degrees clockwise for an image 
 */
-Grayscale rotation90CW(Grayscale img_1){
-    Grayscale result_img(img_1.getCols(),img_1.getRows(),img_1.getGray());
+Image rotation90CW(Image img_1){
+    Image result_img(img_1.getCols(),img_1.getRows(),img_1.getGray(),img_1.getType());
     int k;
 
-    k=img_1.getCols()-1;
-    for (int i=0; i<=img_1.getRows()-1; i++) {
-        for (int j=0; j<=img_1.getCols()-1; j++) {
-            result_img.setCell(j,k,img_1.getCell(i,j));
+    for (int l = 0; l < 3; l++) {
+        k=img_1.getCols()-1;
+        for (int i=0; i<=img_1.getRows()-1; i++) {
+            for (int j=0; j<=img_1.getCols()-1; j++) {
+                result_img.setCell(l,j,k,img_1.getCell(l,i,j));
+            }
+            k--;
         }
-        // cout<<i<<"\n";
-        k--;
     }
-    // cout<<"finish\n";
     return result_img;
 }
 
@@ -230,12 +246,14 @@ Grayscale rotation90CW(Grayscale img_1){
 Function for vertical flipping
 Apply X-axis (cartesian) reflection of image 
 */
-Grayscale verticalFlip(Grayscale img_1){
-    Grayscale result_img(img_1.getRows(),img_1.getCols(),img_1.getGray());
+Image verticalFlip(Image img_1){
+    Image result_img(img_1.getRows(),img_1.getCols(),img_1.getGray(),img_1.getType());
 
-    for (int i = 0; i < result_img.getRows(); i++) {
-        for (int j = 0; j < result_img.getCols(); j++) {
-            result_img.setCell(i,j,img_1.getCell(img_1.getRows()-1-i,j));
+    for (int k = 0; k < 3; k++) {
+        for (int i = 0; i < result_img.getRows(); i++) {
+            for (int j = 0; j < result_img.getCols(); j++) {
+                result_img.setCell(k,i,j,img_1.getCell(k,img_1.getRows()-1-i,j));
+            }
         }
     }
     return result_img;
@@ -245,12 +263,14 @@ Grayscale verticalFlip(Grayscale img_1){
 Function for horizontal flipping
 Apply Y-axis (cartesian) reflection of image 
 */
-Grayscale horizontalFlip(Grayscale img_1){
-    Grayscale result_img(img_1.getRows(),img_1.getCols(),img_1.getGray());
+Image horizontalFlip(Image img_1){
+    Image result_img(img_1.getRows(),img_1.getCols(),img_1.getGray(),img_1.getType());
 
-    for (int i = 0; i < result_img.getRows(); i++) {
-        for (int j = 0; j < result_img.getCols(); j++) {
-            result_img.setCell(i,j,img_1.getCell(i,img_1.getCols()-1-j));
+    for (int k = 0; k < 3; k++) {
+        for (int i = 0; i < result_img.getRows(); i++) {
+            for (int j = 0; j < result_img.getCols(); j++) {
+                result_img.setCell(k,i,j,img_1.getCell(k,i,img_1.getCols()-1-j));
+            }
         }
     }
     return result_img;
@@ -260,12 +280,14 @@ Grayscale horizontalFlip(Grayscale img_1){
 Function for point of origin relection flipping
 Apply mirroring at the point of origin (0,0) reflection of image 
 */
-Grayscale POFFlip(Grayscale img_1){
-    Grayscale result_img(img_1.getRows(),img_1.getCols(),img_1.getGray());
+Image POFFlip(Image img_1){
+    Image result_img(img_1.getRows(),img_1.getCols(),img_1.getGray(),img_1.getType());
 
-    for (int i = 0; i < result_img.getRows(); i++) {
-        for (int j = 0; j < result_img.getCols(); j++) {
-            result_img.setCell(i,j,img_1.getCell(img_1.getRows()-1-i,img_1.getCols()-1-j));
+    for (int k = 0; k < 3; k++) {
+        for (int i = 0; i < result_img.getRows(); i++) {
+            for (int j = 0; j < result_img.getCols(); j++) {
+                result_img.setCell(k,i,j,img_1.getCell(k,img_1.getRows()-1-i,img_1.getCols()-1-j));
+            }
         }
     }
     return result_img;
@@ -275,12 +297,14 @@ Grayscale POFFlip(Grayscale img_1){
 Function for reflection on x=y line flipping
 Apply mirroring reflection on the line x = y of image 
 */
-Grayscale xyFlip(Grayscale img_1){
-    Grayscale result_img(img_1.getCols(),img_1.getRows(),img_1.getGray());
+Image xyFlip(Image img_1){
+    Image result_img(img_1.getCols(),img_1.getRows(),img_1.getGray(),img_1.getType());
 
-    for (int i = 0; i < result_img.getRows(); i++) {
-        for (int j = 0; j < result_img.getCols(); j++) {
-            result_img.setCell(i,j,img_1.getCell(j,i));
+    for (int k = 0; k < 3; k++) {
+        for (int i = 0; i < result_img.getRows(); i++) {
+            for (int j = 0; j < result_img.getCols(); j++) {
+                result_img.setCell(k,i,j,img_1.getCell(k,j,i));
+            }
         }
     }
     return result_img;
@@ -290,21 +314,23 @@ Grayscale xyFlip(Grayscale img_1){
 Function for Zoom Out Image 2 times 
 Apply magnification of image by a scale factor of 2
 */
-Grayscale zoomOut(Grayscale img_1){
-    Grayscale result_img(img_1.getRows(),img_1.getCols(),img_1.getGray());
+Image zoomOut(Image img_1){
+    Image result_img(img_1.getRows(),img_1.getCols(),img_1.getGray(),img_1.getType());
     int m = 0;
     int n = 0;
 
-    for (int i = 0; i < result_img.getRows()/2; i++) {
-        for (int j = 0; j < result_img.getCols()/2; j++) {
-            result_img.setCell(m,n,img_1.getCell(i,j));
-            result_img.setCell(m,n+1,img_1.getCell(i,j));
-            result_img.setCell(m+1,n,img_1.getCell(i,j));
-            result_img.setCell(m+1,n+1,img_1.getCell(i,j));
-            n=n+2;
+    for (int k = 0; k < 3; k++) {
+        for (int i = 0; i < result_img.getRows()/2; i++) {
+            for (int j = 0; j < result_img.getCols()/2; j++) {
+                result_img.setCell(k,m,n,img_1.getCell(k,i,j));
+                result_img.setCell(k,m,n+1,img_1.getCell(k,i,j));
+                result_img.setCell(k,m+1,n,img_1.getCell(k,i,j));
+                result_img.setCell(k,m+1,n+1,img_1.getCell(k,i,j));
+                n=n+2;
+            }
+            m=m+2;
+            n=0;
         }
-        m=m+2;
-        n=0;
     }
     return result_img;
 }
@@ -313,21 +339,23 @@ Grayscale zoomOut(Grayscale img_1){
 Function for Zoom In Image 2 times 
 Apply magnification of image by a scale factor of 1/2
 */
-Grayscale zoomIn(Grayscale img_1){
-    Grayscale result_img(img_1.getRows(),img_1.getCols(),img_1.getGray());
+Image zoomIn(Image img_1){
+    Image result_img(img_1.getRows(),img_1.getCols(),img_1.getGray(),img_1.getType());
     unsigned char temp;
     int m = 0;
     int n = 0;
 
+for (int k = 0; k < 3; k++) {
     for (int i = 0; i < result_img.getRows()/2; i++) {
         for (int j = 0; j < result_img.getCols()/2; j++) {
-            temp = (img_1.getCell(m,n)+img_1.getCell(m+1,n)+img_1.getCell(m,n+1)+img_1.getCell(m+1,n+1))/4;
-            result_img.setCell(i,j,temp);
+            temp = (img_1.getCell(k,m,n)+img_1.getCell(k,m+1,n)+img_1.getCell(k,m,n+1)+img_1.getCell(k,m+1,n+1))/4;
+            result_img.setCell(k,i,j,temp);
             n=n+2;
         }
         m=m+2;
         n=0;
     }
+}
     return result_img;
 }
 
@@ -338,20 +366,21 @@ int a : range starting value
 int b : range stopping value
 unsigned char :  value to be set
 */
-Grayscale preserveBackgroundGrayLevelSlicing(Grayscale img, int a, int b, unsigned char val){
-    Grayscale result_img(img.getRows(),img.getCols(),img.getGray());
+Image preserveBackgroundGrayLevelSlicing(Image img, int a, int b, unsigned char val){
+    Image result_img(img.getRows(),img.getCols(),img.getGray(),img.getType());
 
-    for (int i = 0; i < img.getRows(); i++) {
-        for (int j = 0; j < img.getCols(); j++) {
-            if ((img.getCell(i,j)>a) && (img.getCell(i,j)<b))   {
-                result_img.setCell(i,j,255);
-            }
-            else    {
-                result_img.setCell(i,j,img.getMatriks()[i][j]); 
+    for (int k = 0; k < 3; k++) {
+        for (int i = 0; i < img.getRows(); i++) {
+            for (int j = 0; j < img.getCols(); j++) {
+                if ((img.getCell(k,i,j)>a) && (img.getCell(k,i,j)<b))   {
+                    result_img.setCell(k,i,j,img.getGray());
+                }
+                else    {
+                    result_img.setCell(k,i,j,img.getCell(k,i,j)); 
+                }
             }
         }
     }
-
     return result_img;
 }
 
@@ -363,69 +392,51 @@ int b : range stopping value
 unsigned char val:  value to be set for pixel in range a~b
 unsigned char discard_val:  value to be set for pixel outside range a~b
 */
-Grayscale discardBackgroundGrayLevelSlicing(Grayscale img, int a, int b, unsigned char val, unsigned char discard_val){
-    Grayscale result_img(img.getRows(),img.getCols(),img.getGray());
+Image discardBackgroundGrayLevelSlicing(Image img, int a, int b, unsigned char val, unsigned char discard_val){
+    Image result_img(img.getRows(),img.getCols(),img.getGray(),img.getType());
 
-    for (int i = 0; i < img.getRows(); i++) {
-        for (int j = 0; j < img.getCols(); j++) {
-            if((img.getCell(i,j)>a) && (img.getCell(i,j)<b))   {
-                result_img.setCell(i,j,val);
-            }
-            else    {
-                result_img.setCell(i,j,discard_val); 
+    for (int k = 0; k < 3; k++) {
+        for (int i = 0; i < img.getRows(); i++) {
+            for (int j = 0; j < img.getCols(); j++) {
+                if((img.getCell(k,i,j)>a) && (img.getCell(k,i,j)<b))   {
+                    result_img.setCell(k,i,j,val);
+                }
+                else    {
+                    result_img.setCell(k,i,j,discard_val); 
+                }
             }
         }
     }
     return result_img;
 }
-
-/*
-function to convert decimal to binary 
-*/
-// int* decToBinary(int n)  { 
-//     int* binaryNum = new int[8];
-//     int i = 0; 
-
-//     while (n > 0) { 
-//         binaryNum[i] = n % 2; 
-//         n = n / 2; 
-//         i++; 
-//     } 
-
-//     return binaryNum;
-// } 
 
 /*
 Function for Bit Plane Slicing
 Highlight the contribution of a particular bit in the image
 int plane : choice of plane of bit to be highlighted (value : 0~7)
 */
-Grayscale bitPlaneSlicing(Grayscale img, int plane){
-    Grayscale result_img(img.getRows(),img.getCols(),img.getGray());
+Image bitPlaneSlicing(Image img, int plane){
+    Image result_img(img.getRows(),img.getCols(),img.getGray(),img.getType());
 
-    for (int i = 0; i < img.getRows(); i++) {
-        for (int j = 0; j < img.getCols(); j++) {
-            // if(decToBinary(img.getCell(i,j))[7-plane])    {
-            //     result_img.setCell(i,j,255);
-            // }
-            // else{
-            //     result_img.setCell(i,j,0);
-            // }
-            unsigned char res = img.getCell(i,j);
-            unsigned char t = 128;
-            for(int b = 7; b>plane; b--)    {
-                if(res-t>0)   {
-                    res = res-t;
+    for (int k = 0; k < 3; k++) {
+        for (int i = 0; i < img.getRows(); i++) {
+            for (int j = 0; j < img.getCols(); j++) {
+                unsigned char res = img.getCell(k,i,j);
+                unsigned char t = 128;
+                for(int b = 7; b>plane; b--)    {
+                    if(res-t>0)   {
+                        res = res-t;
+                    }
+                    t = t/2;
                 }
-                t = t/2;
+                result_img.setCell(k,i,j,res);
             }
-            result_img.setCell(i,j,res);
         }
     }
     return result_img;
 }
 
 int main(){
-    Grayscale image = readPGM("pgm_sample.pgm");
+    Image image = readPGM("pgm_sample.pgm");
     writePGM("new.pgm",bitPlaneSlicing(image,3));
 }

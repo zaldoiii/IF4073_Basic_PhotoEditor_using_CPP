@@ -62,7 +62,7 @@ Image readPPM(const char *filename)
      while (fgetc(fp) != '\n') ;
      //memory allocation for pixel data
      temp = (unsigned char*)malloc(3* x * sizeof(unsigned char));
-     Image img(y, x, RGB_COMPONENT_COLOR);
+     Image img(y, x, RGB_COMPONENT_COLOR,2);
 
      if (!img.getMatriks()) {
           cout<<"Unable to allocate memory\n";
