@@ -9,19 +9,22 @@ class Image
         int cols;       //number of columns
         int gray;       //number of gray levels
         int ***matriks; // 0 : red, 1 : green, 2 : blue
+        int type; // 0 : biner, 1 : grayscale, 2 : coloredimg
 
         //constructor
         Image(){
             this->rows = 0;
             this->cols = 0;
             this->gray = 0;
+            this->type = 0;
             this->matriks = NULL; 
         }
 
-        Image(int numRows, int numCols, int grayLevels){
+        Image(int numRows, int numCols, int grayLevels, int type){
             this->rows = numRows;
             this->cols = numCols;
             this->gray = grayLevels;
+            this->type = type;
             this->matriks = new int**[3];
 
             for (int i = 0; i < 3; i++){
@@ -39,6 +42,7 @@ class Image
             this->rows = oldImage.rows;
             this->cols = oldImage.cols;
             this->gray = oldImage.gray; 
+            this->type = oldImage.type;
             this->matriks = new int** [3];
 
             for (int i = 0; i < 3; i++){
@@ -57,6 +61,7 @@ class Image
             this->rows = 0;
             this->cols = 0;
             this->gray = 0;
+            this->type = 0;
 
             for (int i = 0; i < 3; i++){
                 for (int j = 0; j < this->rows; j++){
@@ -76,6 +81,14 @@ class Image
         }
         int getGray(){
             return this->gray;
+        }
+
+        int getType(){
+            return this->type;
+        }
+
+        void setType(int val){
+            this->type = val;
         }
 
         int ***getMatriks(){
@@ -112,7 +125,7 @@ class Image
 // int main() {
 //     cout << "Testing" << endl; 
 
-//     Image clr(4,2,3);
+//     Image clr(4,2,3,2);
 //     cout << clr.getRows() << endl; 
 //     clr.printMatriks();
     
