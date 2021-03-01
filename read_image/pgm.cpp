@@ -7,7 +7,7 @@ using namespace std;
 #define RGB_COMPONENT_COLOR 255
 
 //read image from pgm file
-Grayscale readPGM(const char *filename)
+Image readPGM(const char *filename)
 {
      char buff[16];
      FILE *fp;
@@ -62,7 +62,7 @@ Grayscale readPGM(const char *filename)
      while (fgetc(fp) != '\n') ;
      //memory allocation for pixel data
      temp = (unsigned char*)malloc(x * sizeof(unsigned char));
-     Grayscale img(y, x, RGB_COMPONENT_COLOR);
+     Image img(y, x, RGB_COMPONENT_COLOR);
 
      if (!img.getMatriks()) {
           cout<<"Unable to allocate memory\n";
@@ -72,7 +72,9 @@ Grayscale readPGM(const char *filename)
      for (int i=0; i<img.getRows(); ++i)  {
           fread(temp, sizeof(temp[0]), img.getCols(), fp);
           for (int j = 0; j < img.getCols(); j++) {
-               img.setCell(i,j,temp[j]);
+               img.setCell(0,i,j,temp[j]);
+               img.setCell(1,i,j,temp[j]);
+               img.setCell(2,i,j,temp[j]);
           } 
      }
 
@@ -81,38 +83,44 @@ Grayscale readPGM(const char *filename)
      return img;
 }
 
-//save grayscale image to pgm file
-void writePGM(const char *filename, Grayscale img)
+//save Image image to pgm file
+void writePGM(const char *filename, Image img)
 {
-    FILE *fp;
-    //open file for output
-    fp = fopen(filename, "wb");
-    if (!fp) {
-         cout<<"Unable to open file '%s'\n";
-         exit(1);
-    }
+     FILE *fp;
+     //open file for output
+     fp = fopen(filename, "wb");
+     if (!fp) {
+          cout<<"Unable to open file '%s'\n";
+          exit(1);
+     }
 
-    //write the header file
-    //image format
-    fprintf(fp, "P5\n");
+     //write the header file
+     //image format
+     fprintf(fp, "P5\n");
 
-    //image size
-    fprintf(fp, "%d %d\n", img.getCols(), img.getRows());
-    cout<<"Size: "<<img.getCols()<<"x"<<img.getRows()<<"\n";
+     //image size
+     fprintf(fp, "%d %d\n", img.getCols(), img.getRows());
+     cout<<"Size: "<<img.getCols()<<"x"<<img.getRows()<<"\n";
 
-    // rgb component depth
-    fprintf(fp, "%d\n",RGB_COMPONENT_COLOR);
-    cout<<RGB_COMPONENT_COLOR<<"\n";
+     // rgb component depth
+     fprintf(fp, "%d\n",RGB_COMPONENT_COLOR);
+     cout<<RGB_COMPONENT_COLOR<<"\n";
 
-    // pixel data
+     // pixel data
+     unsigned char *temp;
+     temp = (unsigned char*)malloc(img.getCols() * sizeof(unsigned char));
+     
      for (int i=0; i<img.getRows(); ++i) {
-          fwrite(img.getMatriks()[i], sizeof(img.getMatriks()[i][0]), img.getCols(), fp);
+          for (int j=0; j<img.getCols(); ++j) {
+               temp[j] = img.getCell(0,i,j); 
+          }
+          fwrite(temp, sizeof(temp[0]), img.getCols(), fp);
      }
      
     fclose(fp);
 }
 
 // int main(){
-//     Grayscale image = readPGM("pgm_sample.pgm");
+//     Image image = readPGM("pgm_sample.pgm");
 //     writePGM("pgm_result.pgm",image);
 // }

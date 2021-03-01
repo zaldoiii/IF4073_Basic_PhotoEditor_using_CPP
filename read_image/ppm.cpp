@@ -7,7 +7,7 @@ using namespace std;
 #define RGB_COMPONENT_COLOR 255
 
 //read image from ppm file
-ColoredImg readPPM(const char *filename)
+Image readPPM(const char *filename)
 {
      char buff[16];
      FILE *fp;
@@ -62,7 +62,7 @@ ColoredImg readPPM(const char *filename)
      while (fgetc(fp) != '\n') ;
      //memory allocation for pixel data
      temp = (unsigned char*)malloc(3* x * sizeof(unsigned char));
-     ColoredImg img(y, x, RGB_COMPONENT_COLOR);
+     Image img(y, x, RGB_COMPONENT_COLOR);
 
      if (!img.getMatriks()) {
           cout<<"Unable to allocate memory\n";
@@ -83,7 +83,7 @@ ColoredImg readPPM(const char *filename)
 }
 
 //save colored image to ppm file
-void writePPM(const char *filename, ColoredImg img)
+void writePPM(const char *filename, Image img)
 {
     FILE *fp;
     //open file for output
@@ -122,6 +122,6 @@ void writePPM(const char *filename, ColoredImg img)
 }
 
 int main(){
-    ColoredImg image = readPPM("ppm_sample.ppm");
+    Image image = readPPM("ppm_sample.ppm");
     writePPM("ppm_result.ppm",image);
 }
