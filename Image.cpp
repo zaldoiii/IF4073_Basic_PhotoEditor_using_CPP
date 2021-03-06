@@ -8,7 +8,7 @@ class Image
         int rows;       //number of rows
         int cols;       //number of columns
         int gray;       //number of gray levels
-        int ***matriks; // 0 : red, 1 : green, 2 : blue
+        unsigned char ***matriks; // 0 : red, 1 : green, 2 : blue
         int type; // 0 : biner, 1 : grayscale, 2 : coloredimg
 
         //constructor
