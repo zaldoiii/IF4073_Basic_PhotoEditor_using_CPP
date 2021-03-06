@@ -6,30 +6,35 @@ using namespace std;
 /*
 Function citra negatif
 */
-// Image negatif(Image img){
-//     Image result_img(img.getRows(),img.getCols(),img.getGray());
-
-//     for (int i = 0; i < result_img.getRows(); i++) {
-//         for (int j = 0; j < result_img.getCols(); j++) {
-//             result_img.setCell(i,j,img.getGray() - img.getCell(i,j));
-//         }
-//     }
-//     return result_img;
-// }
+Image negatif(Image img){
+    Image result_img(img.getRows(),img.getCols(),img.getGray(),img.getType());
+    for (int k = 0; k < 3; k++) {
+        for (int i = 0; i < result_img.getRows(); i++) {
+            for (int j = 0; j < result_img.getCols(); j++) {
+                result_img.setCell(k,i,j,img.getGray() - img.getCell(k,i,j));
+            }
+        }
+    }
+    return result_img;
+}
 
 /*
-Function convert colored img to Image
+Function convert colored img to Grayscale
 */
-// Image convert_to_Image(Image img){
-//     Image result_img(img.getRows(),img.getCols(),img.getGray());
+Image convert_to_Grayscale(Image img){
+    Image result_img(img.getRows(),img.getCols(),img.getGray(),img.getType());
+    int tmp;
 
-//     for (int i = 0; i < result_img.getRows(); i++) {
-//         for (int j = 0; j < result_img.getCols(); j++) {
-//             result_img.setCell(i,j,(img.getCell(0,i,j) + img.getCell(1,i,j) + img.getCell(2,i,j))/3);
-//         }
-//     }
-//     return result_img;
-// }
+    for (int i = 0; i < result_img.getRows(); i++) {
+        for (int j = 0; j < result_img.getCols(); j++) {
+            tmp = (img.getCell(0,i,j) + img.getCell(1,i,j) + img.getCell(2,i,j))/3;
+            result_img.setCell(0,i,j,tmp);
+            result_img.setCell(1,i,j,tmp);
+            result_img.setCell(2,i,j,tmp);
+        }
+    }
+    return result_img;
+}
 
 /*
 Function brightening
@@ -39,24 +44,34 @@ option :
     2 : multiply
     3 : division
 */
-// Image brightening(Image img, int option, int scale){
-//     Image result_img(img.getRows(),img.getCols(),img.getGray());
+Image brightening(Image img, int option, int scale){
+    Image result_img(img.getRows(),img.getCols(),img.getGray(), img.getType());
+    int tmp;
 
-//     for (int i = 0; i < result_img.getRows(); i++) {
-//         for (int j = 0; j < result_img.getCols(); j++) {
-//             if (option == 0){
-//                 result_img.setCell(i,j,img.getCell(i,j) + scale);
-//             } else if (option == 1){
-//                 result_img.setCell(i,j,img.getCell(i,j) - scale);
-//             } else if (option == 2){
-//                 result_img.setCell(i,j,img.getCell(i,j)*scale);
-//             } else if (option == 3){
-//                 result_img.setCell(i,j,img.getCell(i,j)/scale);
-//             }
-//         }
-//     }
-//     return result_img;
-// }
+    for (int k = 0; k < 3; k++){
+        for (int i = 0; i < result_img.getRows(); i++) {
+            for (int j = 0; j < result_img.getCols(); j++) {
+                if (option == 0){
+                    tmp = img.getCell(k,i,j) + scale;
+                } else if (option == 1){
+                    tmp = img.getCell(k,i,j) - scale;
+                } else if (option == 2){
+                    tmp = img.getCell(k,i,j)*scale;
+                } else if (option == 3){
+                    tmp = img.getCell(k,i,j)/scale;
+                }
+
+                if(tmp > img.getGray()){
+                    tmp = img.getGray();
+                } else if (tmp < 0){
+                    tmp = 0;
+                }
+                result_img.setCell(k,i,j,tmp);
+            }
+        }
+    }
+    return result_img;
+}
 
 /*
 Function for Addition
