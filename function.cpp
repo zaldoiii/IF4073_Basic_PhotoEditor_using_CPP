@@ -11,7 +11,7 @@ Image negatif(Image img){
     for (int k = 0; k < 3; k++) {
         for (int i = 0; i < result_img.getRows(); i++) {
             for (int j = 0; j < result_img.getCols(); j++) {
-                result_img.setCell(k,i,j,img.getGray() - img.getCell(k,i,j));
+                result_img.setCell(k,i,j,img.getGray() - img.getCell(k,i,j) - 1);
             }
         }
     }
@@ -45,6 +45,38 @@ option :
     3 : division
 */
 Image brightening(Image img, int option, int scale){
+    Image result_img(img.getRows(),img.getCols(),img.getGray(), img.getType());
+    int tmp;
+
+    for (int k = 0; k < 3; k++){
+        for (int i = 0; i < result_img.getRows(); i++) {
+            for (int j = 0; j < result_img.getCols(); j++) {
+                if (option == 0){
+                    tmp = img.getCell(k,i,j) + scale;
+                } else if (option == 1){
+                    tmp = img.getCell(k,i,j) - scale;
+                } else if (option == 2){
+                    tmp = img.getCell(k,i,j)*scale;
+                } else if (option == 3){
+                    tmp = img.getCell(k,i,j)/scale;
+                }
+
+                if(tmp > img.getGray()){
+                    tmp = img.getGray();
+                } else if (tmp < 0){
+                    tmp = 0;
+                }
+                result_img.setCell(k,i,j,tmp);
+            }
+        }
+    }
+    return result_img;
+}
+
+/*
+Function Transformation log
+*/
+Image transformation_log(Image img, int c){
     Image result_img(img.getRows(),img.getCols(),img.getGray(), img.getType());
     int tmp;
 
