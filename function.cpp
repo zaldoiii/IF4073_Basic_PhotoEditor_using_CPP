@@ -1,6 +1,7 @@
 // #include "Image.cpp"
 #include "read_image/pgm.cpp"
 #include <iostream>
+#include <math.h>  
 using namespace std;
 
 /*
@@ -76,28 +77,50 @@ Image brightening(Image img, int option, int scale){
 /*
 Function Transformation log
 */
-Image transformation_log(Image img, int c){
+Image transformation_log(Image img, double c){
     Image result_img(img.getRows(),img.getCols(),img.getGray(), img.getType());
-    int tmp;
+    double tmp;
 
     for (int k = 0; k < 3; k++){
         for (int i = 0; i < result_img.getRows(); i++) {
             for (int j = 0; j < result_img.getCols(); j++) {
-                if (option == 0){
-                    tmp = img.getCell(k,i,j) + scale;
-                } else if (option == 1){
-                    tmp = img.getCell(k,i,j) - scale;
-                } else if (option == 2){
-                    tmp = img.getCell(k,i,j)*scale;
-                } else if (option == 3){
-                    tmp = img.getCell(k,i,j)/scale;
-                }
+                tmp = c * log(1 + img.getCell(k,i,j));
+                result_img.setCell(k,i,j,tmp);
+            }
+        }
+    }
+    return result_img;
+}
 
-                if(tmp > img.getGray()){
-                    tmp = img.getGray();
-                } else if (tmp < 0){
-                    tmp = 0;
-                }
+/*
+Function Transformation log inverse
+*/
+Image transformation_log_inverse(Image img, double c){
+    Image result_img(img.getRows(),img.getCols(),img.getGray(), img.getType());
+    double tmp;
+
+    for (int k = 0; k < 3; k++){
+        for (int i = 0; i < result_img.getRows(); i++) {
+            for (int j = 0; j < result_img.getCols(); j++) {
+                tmp = c * exp(img.getCell(k,i,j) - 1);
+                result_img.setCell(k,i,j,tmp);
+            }
+        }
+    }
+    return result_img;
+}
+
+/*
+Function Transformation pangkat
+*/
+Image transformation_pangkat(Image img, double c, double y){
+    Image result_img(img.getRows(),img.getCols(),img.getGray(), img.getType());
+    double tmp;
+
+    for (int k = 0; k < 3; k++){
+        for (int i = 0; i < result_img.getRows(); i++) {
+            for (int j = 0; j < result_img.getCols(); j++) {
+                tmp = c * pow(img.getCell(k,i,j), y);
                 result_img.setCell(k,i,j,tmp);
             }
         }
