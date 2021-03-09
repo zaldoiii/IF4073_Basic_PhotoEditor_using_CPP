@@ -506,7 +506,109 @@ Image bitPlaneSlicing(Image img, int plane){
     return result_img;
 }
 
+Image histogramEqualization(Image img)
+/* 
+Function for Histogram Equalization
+Apply histogram equalization to image.
+*/
+{
+    Image result_img(img.getRows(),img.getCols(),img.getGray(),img.getType());
+    float image_pixel_count = img.getRows()*img.getCols();
+cout<<(int)img.getCell(0,0,0);
+    for (int k = 0; k < 3; k++) {
+        // create frequency histogram
+        int freq[256];
+        for(int i=0;i<256;i++) {
+            freq[i]=0;
+        }
+        for (int i = 0; i < img.getRows(); i++) {
+            for (int j = 0; j < img.getCols(); j++) {
+                freq[(int)img.getCell(k,i,j)] += 1;
+            }
+        }
+
+        // histogram equalization
+        float sum= 0.0;
+        int new_hist[256];
+        for(int i=0;i<256;i++) {
+            sum=sum+freq[i];
+            new_hist[i]=(int) floor((255*sum)/image_pixel_count);
+            cout<<new_hist[i]<<"\n";
+        }
+
+        // updating image
+        for (int i = 0; i < img.getRows(); i++) {
+            for (int j = 0; j < img.getCols(); j++) {
+                result_img.setCell(k,i,j,(unsigned char)new_hist[img.getCell(k,i,j)]);
+            }
+        }
+    }
+    return result_img;
+}
+
+/* 
+Function for Histogram Equalization
+Apply histogram equalization to image based on specified histogram.
+*/
+Image specifiedHistogramEqualization(Image img,float spec[256])
+{
+    Image result_img(img.getRows(),img.getCols(),img.getGray(),img.getType());
+    float image_pixel_count = img.getRows()*img.getCols();
+
+    for (int k = 0; k < 3; k++) {
+        // create frequency histogram
+        int freq[256];
+        for(int i=0;i<256;i++) {
+            freq[i]=0;
+        }
+        for (int i = 0; i < img.getRows(); i++) {
+            for (int j = 0; j < img.getCols(); j++) {
+                freq[(int)img.getCell(k,i,j)] += 1;
+            }
+        }
+
+        // histogram equalization
+        float sum= 0.0;
+        int new_hist[256];
+        for(int i=0;i<256;i++) {
+            sum=sum+freq[i];
+            new_hist[i]=(int) floor((255*sum)/image_pixel_count);
+            // cout<<new_hist[i]<<"\n";
+        }
+
+        sum= 0.0;
+        int new_spec_hist[256];
+        for(int i=0;i<256;i++) {
+            sum=sum+spec[i];
+            new_spec_hist[i]=(int) floor((255*sum)/image_pixel_count);
+            // cout<<new_hist[i]<<"\n";
+        }
+
+        int minval,minj;
+        int inv_hist[256];
+        for(int i=0;i<=255;i++) {
+            minval=abs(new_hist[i]- new_spec_hist[0]);
+            minj=0;
+            for(int j=0;j<=255;j++) {
+                if (abs(new_hist[i] - new_spec_hist[j]) < minval)    {
+                    minval = abs(new_hist[i] - new_spec_hist[j]);
+                    minj=j;
+                }
+            }
+            inv_hist[i]=minj;
+        }
+
+        // updating image
+        for (int i = 0; i < img.getRows(); i++) {
+            for (int j = 0; j < img.getCols(); j++) {
+                result_img.setCell(k,i,j,(unsigned char)inv_hist[img.getCell(k,i,j)]);
+            }
+        }
+    }
+    return result_img;
+}
+
 int main(){
     Image image = readPGM("pgm_sample.pgm");
-    writePGM("new.pgm",bitPlaneSlicing(image,3));
+    writePGM("new.pgm",histogramEqualization(image));
 }

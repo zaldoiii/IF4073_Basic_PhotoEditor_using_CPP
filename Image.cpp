@@ -25,12 +25,12 @@ class Image
             this->cols = numCols;
             this->gray = grayLevels;
             this->type = type;
-            this->matriks = new int**[3];
+            this->matriks = new unsigned char**[3];
 
             for (int i = 0; i < 3; i++){
-                this->matriks[i] = new int*[this->rows];
+                this->matriks[i] = new unsigned char*[this->rows];
                 for (int j = 0; j < this->rows; j++) {
-                    this->matriks[i][j] = new int[this->cols];
+                    this->matriks[i][j] = new unsigned char[this->cols];
                     for (int k = 0; k < this->cols; k++) {
                         this->matriks[i][j][k] = 0;
                     }
@@ -43,12 +43,12 @@ class Image
             this->cols = oldImage.cols;
             this->gray = oldImage.gray; 
             this->type = oldImage.type;
-            this->matriks = new int** [3];
+            this->matriks = new unsigned char** [3];
 
             for (int i = 0; i < 3; i++){
-                this->matriks[i] = new int*[this->rows];
+                this->matriks[i] = new unsigned char*[this->rows];
                 for (int j = 0; j < this->rows; j++) {
-                    this->matriks[i][j] = new int[this->cols];
+                    this->matriks[i][j] = new unsigned char[this->cols];
                     for (int k = 0; k < this->cols; k++) {
                         this->matriks[i][j][k] = oldImage.matriks[i][j][k];
                     }
@@ -91,7 +91,7 @@ class Image
             this->type = val;
         }
 
-        int ***getMatriks(){
+        unsigned char ***getMatriks(){
             return this->matriks;
         }
     
