@@ -24,7 +24,7 @@ Function convert colored img to Grayscale
 */
 Image convert_to_Grayscale(Image img){
     Image result_img(img.getRows(),img.getCols(),img.getGray(),img.getType());
-    int tmp;
+    unsigned char tmp;
 
     for (int i = 0; i < result_img.getRows(); i++) {
         for (int j = 0; j < result_img.getCols(); j++) {
@@ -47,7 +47,7 @@ option :
 */
 Image brightening(Image img, int option, int scale){
     Image result_img(img.getRows(),img.getCols(),img.getGray(), img.getType());
-    int tmp;
+    unsigned char tmp;
 
     for (int k = 0; k < 3; k++){
         for (int i = 0; i < result_img.getRows(); i++) {
