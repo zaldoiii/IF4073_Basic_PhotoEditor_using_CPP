@@ -608,6 +608,40 @@ Image specifiedHistogramEqualization(Image img,float spec[256])
     return result_img;
 }
 
+void convolute(int **input, int **output, double **kernel, int rows, int cols, int rows_kernel, int cols_kernel){
+        int convolute = 0; 
+        int x, y; //input matrix index
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                x = i;
+                y = j;
+
+                for (int k = 0; k < rows_kernel; k++)
+                {
+                    for (int l = 0; l < cols_kernel; l++)
+                    {
+                        convolute += kernel[k][l] * input[x][y];
+                        y++; // Move right.
+                    }
+                    x++; // Move down.
+                    y = j; // Restart column position
+                }
+                if (convolute < 0){
+                    output[i][j] = 0;
+                } else {
+					if (convolute > 255)
+						output[i][j] = 255;
+					else
+						output[i][j] = convolute;
+                }
+                convolute = 0; 
+            }
+        }
+}
+
 int main(){
     Image image = readPGM("pgm_sample.pgm");
     writePGM("new.pgm",histogramEqualization(image));
