@@ -4,6 +4,59 @@
 #include <math.h>  
 using namespace std;
 
+int** createMatrix(int rows, int cols, int initValue){
+    //alloc matrix
+    int** matrix = new int*[rows];
+    
+    for (int i = 0; i < rows; ++i){
+        matrix[i] = new int[cols];
+    }
+
+    //Init matrix
+    for(int i =0; i<rows; i++){
+        for(int j = 0; j<cols; j++){
+            matrix[i][j] = initValue;
+        }
+    }
+    return matrix;
+}
+
+double** createMatrix(int rows, int cols, double initValue){
+    //alloc matrix
+    double** matrix = new double*[rows];
+    
+    for (int i = 0; i < rows; ++i){
+        matrix[i] = new double[cols];
+    }
+
+    //Init matrix
+    for(int i =0; i<rows; i++){
+        for(int j = 0; j<cols; j++){
+            matrix[i][j] = initValue;
+        }
+    }
+
+    return matrix;
+}
+
+unsigned char** createMatrix(int rows, int cols, unsigned char initValue){
+    //alloc matrix
+    unsigned char** matrix = new unsigned char*[rows];
+    
+    for (int i = 0; i < rows; ++i){
+        matrix[i] = new unsigned char[cols];
+    }
+
+    //Init matrix
+    for(int i =0; i<rows; i++){
+        for(int j = 0; j<cols; j++){
+            matrix[i][j] = initValue;
+        }
+    }
+
+    return matrix;
+}
+
 /*
 Function citra negatif
 */
@@ -608,38 +661,99 @@ Image specifiedHistogramEqualization(Image img,float spec[256])
     return result_img;
 }
 
-void convolute(int **input, int **output, double **kernel, int rows, int cols, int rows_kernel, int cols_kernel){
-        int convolute = 0; 
-        int x, y; //input matrix index
+Image convolute(Image img, double **kernel, int rows_kernel, int cols_kernel){
+    Image result_img(img.getRows(),img.getCols(),img.getGray(),img.getType());
+    int convolute = 0; 
+    int x, y; //img matrix index
+    int rows_tmp = img.getRows()-rows_kernel+1;
+    int cols_tmp = img.getCols()-cols_kernel+1;
+    double** tmp = createMatrix(rows_tmp,cols_tmp,0.0);
 
-        for (int i = 0; i < rows; i++)
+    for (int k = 0; k < 3; k++){
+        for (int i = 0; i < img.getRows(); i++)
         {
-            for (int j = 0; j < cols; j++)
+            for (int j = 0; j < img.getCols(); j++)
             {
                 x = i;
                 y = j;
-
                 for (int k = 0; k < rows_kernel; k++)
                 {
                     for (int l = 0; l < cols_kernel; l++)
                     {
-                        convolute += kernel[k][l] * input[x][y];
+                        convolute = convolute + kernel[k][l] * img.getCell(k,x,y);
                         y++; // Move right.
                     }
                     x++; // Move down.
                     y = j; // Restart column position
                 }
                 if (convolute < 0){
-                    output[i][j] = 0;
+                    tmp[i][j] = 0;
                 } else {
-					if (convolute > 255)
-						output[i][j] = 255;
-					else
-						output[i][j] = convolute;
+                    if (convolute > 255)
+                        tmp[i][j] = 255;
+                    else
+                        tmp[i][j] = convolute;
                 }
                 convolute = 0; 
             }
         }
+        for (int i = 0; i < img.getRows(); i++)
+        {
+            for (int j = 0; j < img.getCols(); j++)
+            {
+                if (i >= (img.getRows() - rows_tmp)/2){
+                    result_img.setCell(k,i,j,(unsigned char)tmp[i][j]);
+                } else {
+                    result_img.setCell(k,i,j,img.getCell(k,i,j));
+                }
+
+                if (i >= (img.getCols() - cols_tmp)/2){
+                    result_img.setCell(k,i,j,(unsigned char)tmp[i][j]);
+                } else {
+                    result_img.setCell(k,i,j,img.getCell(k,i,j));
+                }
+            }
+        }
+    }
+    return result_img;
+}
+
+/*
+Penapis rata-rata
+*/
+Image penapis_mean(Image img, double **kernel, int rows_kernel, int cols_kernel){
+    Image result_img(img.getRows(),img.getCols(),img.getGray(),img.getType());
+    double** kernel_mean = createMatrix(rows_kernel,cols_kernel,0.0);
+    
+    for (int i = 0; i < rows_kernel; i++){
+        for (int j = 0; j < cols_kernel; j++){
+            kernel_mean[i][j] = kernel[i][j]/(rows_kernel*cols_kernel);
+        }
+    }
+    
+    result_img = convolute(img, kernel_mean, rows_kernel, cols_kernel);
+    return result_img;
+}
+
+/*
+Penapis gaussian
+*/
+Image penapis_gaussian(Image img){
+    Image result_img(img.getRows(),img.getCols(),img.getGray(),img.getType());
+	double** kernel = createMatrix(3,3,1.0);
+	kernel[0][0]=1.0/16;
+	kernel[0][1]=1.0/8;
+	kernel[0][2]=1.0/16;
+	kernel[1][0]=1.0/8;
+	kernel[1][1]=1.0/4;
+	kernel[1][2]=1.0/8;
+	kernel[2][0]=1.0/16;
+	kernel[2][1]=1.0/8;
+	kernel[2][2]=1.0/16;
+    
+    
+    result_img = convolute(img, kernel, 3, 3);
+    return result_img;
 }
 
 int main(){
