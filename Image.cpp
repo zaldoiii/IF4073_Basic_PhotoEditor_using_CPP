@@ -10,6 +10,9 @@ class Image
         int gray;       //number of gray levels
         unsigned char ***matriks; // 0 : red, 1 : green, 2 : blue
         int type; // 0 : biner, 1 : grayscale, 2 : coloredimg
+        int rows_pad;
+        int cols_pad;
+        unsigned char ***matriks_padding; 
 
         //constructor
         Image(){
@@ -17,7 +20,10 @@ class Image
             this->cols = 0;
             this->gray = 0;
             this->type = 0;
-            this->matriks = NULL; 
+            this->matriks = NULL;
+            this->rows_pad = 0;
+            this->cols_pad = 0;
+            this->matriks_padding = NULL;  
         }
 
         Image(int numRows, int numCols, int grayLevels, int type){
@@ -25,6 +31,8 @@ class Image
             this->cols = numCols;
             this->gray = grayLevels;
             this->type = type;
+            this->rows_pad = 0;
+            this->cols_pad = 0;
             this->matriks = new unsigned char**[3];
 
             for (int i = 0; i < 3; i++){
@@ -32,10 +40,21 @@ class Image
                 for (int j = 0; j < this->rows; j++) {
                     this->matriks[i][j] = new unsigned char[this->cols];
                     for (int k = 0; k < this->cols; k++) {
-                        this->matriks[i][j][k] = 0;
+                        this->matriks[i][j][k] = 1;
                     }
                 }
             }
+
+            // this->matriks_padding = new unsigned char**[3];
+            // for (int i = 0; i < 3; i++){
+            //     this->matriks_padding[i] = new unsigned char*[this->rows_pad];
+            //     for (int j = 0; j < this->rows_pad; j++) {
+            //         this->matriks_padding[i][j] = new unsigned char[this->cols_pad];
+            //         for (int k = 0; k < this->cols_pad; k++) {
+            //             this->matriks_padding[i][j][k] = 0;
+            //         }
+            //     }
+            // }
         }
 
         Image(const Image &oldImage){
@@ -54,6 +73,17 @@ class Image
                     }
                 }
             }
+
+            // this->matriks_padding = new unsigned char**[3];
+            // for (int i = 0; i < 3; i++){
+            //     this->matriks_padding[i] = new unsigned char*[this->rows_pad];
+            //     for (int j = 0; j < this->rows_pad; j++) {
+            //         this->matriks_padding[i][j] = new unsigned char[this->cols_pad];
+            //         for (int k = 0; k < this->cols_pad; k++) {
+            //             this->matriks_padding[i][j][k] = oldImage.matriks_padding[i][j][k];
+            //         }
+            //     }
+            // }
         }
 
         //destroyer
@@ -62,6 +92,8 @@ class Image
             this->cols = 0;
             this->gray = 0;
             this->type = 0;
+            this->rows_pad = 0;
+            this->cols_pad = 0;
 
             for (int i = 0; i < 3; i++){
                 for (int j = 0; j < this->rows; j++){
@@ -70,6 +102,14 @@ class Image
                 delete[] this->matriks[i];
             }
             delete[] this->matriks;
+
+            // for (int i = 0; i < 3; i++){
+            //     for (int j = 0; j < this->rows_pad; j++){
+            //         delete[] this->matriks_padding [i][j];
+            //     }
+            //     delete[] this->matriks_padding[i];
+            // }
+            // delete[] this->matriks_padding;
         }
 
         //method 
@@ -113,7 +153,53 @@ class Image
             for (int i = 0; i < 3; i++){
                 for (int j = 0; j < this->rows; j++){ 
                     for (int k = 0; k < this->cols; k++){ 
-                	    cout << this->matriks[i][j][k] << " "; 
+                	    cout << unsigned(this->matriks[i][j][k]) << " "; 
+                    } 
+                    cout << endl; 
+                }
+                cout << endl; 
+            }
+        }
+
+        int getRowsPad(){
+            return this->rows_pad;
+        }
+
+        int getColsPad(){
+            return this->cols_pad;
+        }
+
+        void setCellPad(int i, int j, int k, unsigned char val){
+            this->matriks_padding[i][j][k] = val;
+        }
+
+        void createPadding(int rows_kernel, int cols_kernel){
+            this->rows_pad = this->rows + (rows_kernel-1)*2;
+            this->cols_pad = this->cols + (cols_kernel-1)*2;
+            cout << this->rows_pad;
+            cout << this->cols_pad;
+
+            this->matriks_padding = new unsigned char**[3];
+            for (int i = 0; i < 3; i++){
+                this->matriks_padding[i] = new unsigned char*[this->rows_pad];
+                for (int j = 0; j < this->rows_pad; j++) {
+                    this->matriks_padding[i][j] = new unsigned char[this->cols_pad];
+                    for (int k = 0; k < this->cols_pad; k++) {
+                        if((j >= rows_kernel - 1) && (j <= this->rows_pad - rows_kernel) && (k >= cols_kernel -1) && (k <= this->cols_pad - cols_kernel)){
+                            this->matriks_padding[i][j][k] = this->matriks[i][j-rows_kernel+1][k-cols_kernel+1];
+                        } else {
+                            this->matriks_padding[i][j][k] = 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        void printMatriksPadding(){
+            for (int i = 0; i < 3; i++){
+                for (int j = 0; j < this->rows_pad; j++){ 
+                    for (int k = 0; k < this->cols_pad; k++){ 
+                	    cout << unsigned(this->matriks_padding[i][j][k]) << " "; 
                     } 
                     cout << endl; 
                 }
@@ -125,9 +211,11 @@ class Image
 // int main() {
 //     cout << "Testing" << endl; 
 
-//     Image clr(4,2,3,2);
+//     Image clr(5,5,3,2);
 //     cout << clr.getRows() << endl; 
 //     clr.printMatriks();
+//     clr.createPadding(4,4);
+//     clr.printMatriksPadding();
     
 //     return 0; 
 // };
