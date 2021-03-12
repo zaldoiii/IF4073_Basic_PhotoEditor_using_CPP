@@ -40,7 +40,7 @@ class Image
                 for (int j = 0; j < this->rows; j++) {
                     this->matriks[i][j] = new unsigned char[this->cols];
                     for (int k = 0; k < this->cols; k++) {
-                        this->matriks[i][j][k] = 1;
+                        this->matriks[i][j][k] = 0;
                     }
                 }
             }
