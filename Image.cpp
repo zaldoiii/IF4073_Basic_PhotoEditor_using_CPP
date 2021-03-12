@@ -21,8 +21,8 @@ class Image
             this->gray = 0;
             this->type = 0;
             this->matriks = NULL;
-            this->rows_pad = 0;
-            this->cols_pad = 0;
+            // this->rows_pad = 0;
+            // this->cols_pad = 0;
             this->matriks_padding = NULL;  
         }
 
@@ -31,8 +31,8 @@ class Image
             this->cols = numCols;
             this->gray = grayLevels;
             this->type = type;
-            this->rows_pad = 0;
-            this->cols_pad = 0;
+            // this->rows_pad = 0;
+            // this->cols_pad = 0;
             this->matriks = new unsigned char**[3];
 
             for (int i = 0; i < 3; i++){
@@ -92,8 +92,8 @@ class Image
             this->cols = 0;
             this->gray = 0;
             this->type = 0;
-            this->rows_pad = 0;
-            this->cols_pad = 0;
+            // this->rows_pad = 0;
+            // this->cols_pad = 0;
 
             for (int i = 0; i < 3; i++){
                 for (int j = 0; j < this->rows; j++){
@@ -103,13 +103,13 @@ class Image
             }
             delete[] this->matriks;
 
-            for (int i = 0; i < 3; i++){
-                for (int j = 0; j < this->rows_pad; j++){
-                    delete[] this->matriks_padding [i][j];
-                }
-                delete[] this->matriks_padding[i];
-            }
-            delete[] this->matriks_padding;
+            // for (int i = 0; i < 3; i++){
+            //     for (int j = 0; j < this->rows_pad; j++){
+            //         delete[] this->matriks_padding [i][j];
+            //     }
+            //     delete[] this->matriks_padding[i];
+            // }
+            // delete[] this->matriks_padding;
         }
 
         //method 
@@ -161,51 +161,63 @@ class Image
             }
         }
 
-        int getRowsPad(){
-            return this->rows_pad;
-        }
+        // int getRowsPad(){
+        //     return this->rows_pad;
+        // }
 
-        int getColsPad(){
-            return this->cols_pad;
-        }
+        // int getColsPad(){
+        //     return this->cols_pad;
+        // }
 
-        void setCellPad(int i, int j, int k, unsigned char val){
-            this->matriks_padding[i][j][k] = val;
-        }
+        // void setCellPad(int i, int j, int k, unsigned char val){
+        //     this->matriks_padding[i][j][k] = val;
+        // }
 
-        void createPadding(int rows_kernel, int cols_kernel){
-            this->rows_pad = this->rows + (rows_kernel-1)*2;
-            this->cols_pad = this->cols + (cols_kernel-1)*2;
-            cout << this->rows_pad;
-            cout << this->cols_pad;
+        // void createPadding(int rows_kernel, int cols_kernel){
+        //     int diff_row, diff_col;
+        //     if (rows_kernel % 2 == 0){
+        //         this->rows_pad = this->rows + rows_kernel - 1;
+        //         diff_row = rows_kernel/2;
+        //     } else if (rows_kernel % 2 == 1) {
+        //         this->rows_pad = this->rows + rows_kernel;
+        //         diff_row = rows_kernel/2;
+        //     }
 
-            this->matriks_padding = new unsigned char**[3];
-            for (int i = 0; i < 3; i++){
-                this->matriks_padding[i] = new unsigned char*[this->rows_pad];
-                for (int j = 0; j < this->rows_pad; j++) {
-                    this->matriks_padding[i][j] = new unsigned char[this->cols_pad];
-                    for (int k = 0; k < this->cols_pad; k++) {
-                        if((j >= rows_kernel - 1) && (j <= this->rows_pad - rows_kernel) && (k >= cols_kernel -1) && (k <= this->cols_pad - cols_kernel)){
-                            this->matriks_padding[i][j][k] = this->matriks[i][j-rows_kernel+1][k-cols_kernel+1];
-                        } else {
-                            this->matriks_padding[i][j][k] = 0;
-                        }
-                    }
-                }
-            }
-        }
+        //     if (cols_kernel % 2 == 0){
+        //         this->cols_pad = this->cols + cols_kernel - 1;
+        //         diff_col = cols_kernel/2;
+        //     } else if (cols_kernel % 2 == 1) {
+        //         this->cols_pad = this->cols + cols_kernel;
+        //         diff_col = cols_kernel/2;
+        //     }
 
-        void printMatriksPadding(){
-            for (int i = 0; i < 3; i++){
-                for (int j = 0; j < this->rows_pad; j++){ 
-                    for (int k = 0; k < this->cols_pad; k++){ 
-                	    cout << unsigned(this->matriks_padding[i][j][k]) << " "; 
-                    } 
-                    cout << endl; 
-                }
-                cout << endl; 
-            }
-        }
+        //     this->matriks_padding = new unsigned char**[3];
+        //     for (int i = 0; i < 3; i++){
+        //         this->matriks_padding[i] = new unsigned char*[this->rows_pad];
+        //         for (int j = 0; j < this->rows_pad; j++) {
+        //             this->matriks_padding[i][j] = new unsigned char[this->cols_pad];
+        //             for (int k = 0; k < this->cols_pad; k++) {
+        //                 if((j >= diff_row) && (j <= this->rows_pad - diff_row - 1) && (k >= diff_col) && (k <= this->cols_pad - diff_col - 1)){
+        //                     this->matriks_padding[i][j][k] = this->matriks[i][j-diff_row][k-diff_col];
+        //                 } else {
+        //                     this->matriks_padding[i][j][k] = 0;
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
+
+        // void printMatriksPadding(){
+        //     for (int i = 0; i < 3; i++){
+        //         for (int j = 0; j < this->rows_pad; j++){ 
+        //             for (int k = 0; k < this->cols_pad; k++){ 
+        //         	    cout << unsigned(this->matriks_padding[i][j][k]) << " "; 
+        //             } 
+        //             cout << endl; 
+        //         }
+        //         cout << endl; 
+        //     }
+        // }
 }; 
 
 // int main() {
