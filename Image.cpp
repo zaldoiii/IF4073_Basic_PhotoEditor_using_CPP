@@ -208,14 +208,14 @@ class Image
         }
 }; 
 
-int main() {
-    cout << "Testing" << endl; 
+// int main() {
+//     cout << "Testing" << endl; 
 
-    Image clr(5,5,3,2);
-    cout << clr.getRows() << endl; 
-    clr.printMatriks();
-    clr.createPadding(4,4);
-    clr.printMatriksPadding();
+//     Image clr(5,5,3,2);
+//     cout << clr.getRows() << endl; 
+//     clr.printMatriks();
+//     clr.createPadding(4,4);
+//     clr.printMatriksPadding();
     
-    return 0; 
-};
+//     return 0; 
+// };
