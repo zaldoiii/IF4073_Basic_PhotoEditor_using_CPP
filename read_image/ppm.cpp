@@ -2,6 +2,9 @@
 #include<stdlib.h>
 #include"../Image.cpp"
 #include<iostream>
+#include <windows.h>
+#include <wingdi.h>
+
 using namespace std;
 
 #define RGB_COMPONENT_COLOR 255
@@ -122,6 +125,20 @@ void writePPM(const char *filename, Image img)
 }
 
 int main(){
-    Image image = readPPM("ppm_sample.ppm");
-    writePPM("ppm_result.ppm",image);
+    int N;
+    
+    cin >> N;
+    Image curImg = readPPM("ppm_sample.ppm");
+    
+    cin>> N;
+    HWND hWnd = GetConsoleWindow();
+    HDC hdc = GetDC(hWnd);
+    for (int x = 0; x < curImg.getRows(); ++x) {
+         for (int y = 0; y < curImg.getCols(); ++y) {
+              SetPixel(hdc, x, y, RGB(curImg.getCell(0,x,y), curImg.getCell(1,x,y), curImg.getCell(2,x,y)));
+         }
+    }
+
+    cin >> N;
+    writePPM("ppm_result.ppm", curImg);
 }

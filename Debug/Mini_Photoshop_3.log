@@ -1,0 +1,4 @@
+﻿  GUIProgram.cpp
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3\GUIProgram.cpp(8,33): warning C4829: Possibly incorrect parameters to function main. Consider 'int main(Platform::Array<Platform::String^>^ argv)'
+  GUIProgram.obj : MSIL module encountered; incremental linking is disabled for MSIL; performing full link
+  Mini_Photoshop_3.vcxproj -> D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3\Debug\Mini_Photoshop_3.exe
