@@ -1,5 +1,5 @@
 // #include "Image.cpp"
-#include "read_image/pgm.cpp"
+#include "read_image/ppm.cpp"
 #include <iostream>
 #include <math.h>  
 using namespace std;
@@ -121,6 +121,35 @@ Image brightening(Image img, int option, int scale){
                     tmp = 0;
                 }
                 result_img.setCell(k,i,j,tmp);
+            }
+        }
+    }
+    return result_img;
+}
+
+/*
+Function Contrast Stretching
+*/
+Image contrastStretching(Image img, int a, int b){
+    Image result_img(img.getRows(),img.getCols(),img.getGray(), img.getType());
+    unsigned char tmp;
+    int rmin= (a*img.getGray())/100;
+    int rmax= (b*img.getGray())/100;
+    for (int k = 0; k < 3; k++){
+        for (int i = 0; i < result_img.getRows(); i++) {
+            for (int j = 0; j < result_img.getCols(); j++) {
+                
+                if(img.getCell(k,i,j)<rmin)    {
+                    
+                    result_img.setCell(k,i,j,0);
+                }
+                else if(img.getCell(k,i,j)>rmax)    {
+                    result_img.setCell(k,i,j,img.getGray());
+                }
+                else    {
+                    result_img.setCell(k,i,j,(unsigned char)img.getGray()*(img.getCell(k,i,j)-rmin)/(rmax-rmin));
+                    
+                }
             }
         }
     }
@@ -559,6 +588,51 @@ Image bitPlaneSlicing(Image img, int plane){
     return result_img;
 }
 
+void histogram(Image img)
+/* 
+Function for Histogram Statistic
+*/
+{
+    Image result_img(img.getRows(),img.getCols(),img.getGray(),img.getType());
+    float image_pixel_count = img.getRows()*img.getCols();
+    
+    for (int k = 0; k < 3; k++) {
+        // create frequency histogram
+        int freq[256];
+        float normalized_histogram[256];
+        for(int i=0;i<256;i++) {
+            freq[i]=0;
+        }
+        for (int i = 0; i < img.getRows(); i++) {
+            for (int j = 0; j < img.getCols(); j++) {
+                freq[(int)img.getCell(k,i,j)] += 1;
+            }
+        }
+        for(int i=0;i<256;i++) {
+            normalized_histogram[i] = freq[i]/image_pixel_count;
+        }
+
+        // Mean 
+        float mean = 0;
+        for(int i=0;i<256;i++) {
+            mean += normalized_histogram[i] *i;
+        }
+        cout<<"Mean: "<<mean<<"\n";
+
+        // Variance
+        float variance = 0;
+        for(int i=0;i<256;i++) {
+            variance += normalized_histogram[i] *pow(i-mean,2);
+        }
+        cout<<"Variance: "<<variance<<"\n";
+
+        // Standard deviation
+        float d = sqrt(variance);
+        cout<<"Standard deviation: "<<d<<"\n";
+    }
+
+}
+
 Image histogramEqualization(Image img)
 /* 
 Function for Histogram Equalization
@@ -567,7 +641,7 @@ Apply histogram equalization to image.
 {
     Image result_img(img.getRows(),img.getCols(),img.getGray(),img.getType());
     float image_pixel_count = img.getRows()*img.getCols();
-cout<<(int)img.getCell(0,0,0);
+
     for (int k = 0; k < 3; k++) {
         // create frequency histogram
         int freq[256];
@@ -586,7 +660,6 @@ cout<<(int)img.getCell(0,0,0);
         for(int i=0;i<256;i++) {
             sum=sum+freq[i];
             new_hist[i]=(int) floor((255*sum)/image_pixel_count);
-            cout<<new_hist[i]<<"\n";
         }
 
         // updating image
@@ -626,7 +699,6 @@ Image specifiedHistogramEqualization(Image img,float spec[256])
         for(int i=0;i<256;i++) {
             sum=sum+freq[i];
             new_hist[i]=(int) floor((255*sum)/image_pixel_count);
-            // cout<<new_hist[i]<<"\n";
         }
 
         sum= 0.0;
@@ -634,7 +706,6 @@ Image specifiedHistogramEqualization(Image img,float spec[256])
         for(int i=0;i<256;i++) {
             sum=sum+spec[i];
             new_spec_hist[i]=(int) floor((255*sum)/image_pixel_count);
-            // cout<<new_hist[i]<<"\n";
         }
 
         int minval,minj;
@@ -757,6 +828,6 @@ Image penapis_gaussian(Image img){
 }
 
 int main(){
-    Image image = readPGM("pgm_sample.pgm");
-    writePGM("new.pgm",histogramEqualization(image));
+    Image image = readPPM("ppm_sample.ppm");
+    writePPM("new.ppm",histogram(image));
 }
