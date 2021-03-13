@@ -827,7 +827,7 @@ Image penapis_gaussian(Image img){
     return result_img;
 }
 
-int main(){
-    Image image = readPPM("ppm_sample.ppm");
-    writePPM("new.ppm",histogram(image));
-}
+// int main(){
+//     Image image = readPPM("ppm_sample.ppm");
+//     writePPM("new.ppm",histogram(image));
+// }
