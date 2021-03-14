@@ -827,6 +827,70 @@ Image penapis_gaussian(Image img){
     return result_img;
 }
 
+/*
+penapis lolos tinggi
+*/
+Image highpass(Image img){
+    Image result_img(img.getRows(),img.getCols(),img.getGray(),img.getType());
+	double** kernel = createMatrix(3,3,1.0);
+	kernel[0][0]=-1;
+	kernel[0][1]=-1;
+	kernel[0][2]=-1;
+	kernel[1][0]=-1;
+	kernel[1][1]=8;
+	kernel[1][2]=-1;
+	kernel[2][0]=-1;
+	kernel[2][1]=-1;
+	kernel[2][2]=-1;
+    
+    
+    result_img = convolute(img, kernel, 3, 3);
+    return result_img;
+}
+
+/*
+penapis lolos tinggi unsharp masking
+*/
+Image unsharpMasking(Image img){
+    Image lowpass(img.getRows(),img.getCols(),img.getGray(),img.getType());
+    Image highpass(img.getRows(),img.getCols(),img.getGray(),img.getType());
+    Image result_img(img.getRows(),img.getCols(),img.getGray(),img.getType());
+
+	lowpass = penapis_gaussian(img);
+    highpass = substraction(img, lowpass);
+    result_img = addition(img, highpass);
+    
+    return result_img;
+}
+
+Image multiplication(Image img, double factor){
+    Image result_img(img.getRows(),img.getCols(),img.getGray(),img.getType());
+    unsigned char tmp;
+    for (int k = 0; k < 3; k++) {
+        for (int i = 0; i < result_img.getRows(); i++) {
+            for (int j = 0; j < result_img.getCols(); j++) {
+                tmp = (double) img.getCell(k,i,j) * factor;
+                result_img.setCell(k,i,j,(unsigned char)tmp);
+            }
+        }
+    }
+    return result_img;
+}
+/*
+penapis lolos tinggi highboost
+*/
+Image highboost(Image img, double alpha){
+    Image lowpass(img.getRows(),img.getCols(),img.getGray(),img.getType());
+    Image highpass(img.getRows(),img.getCols(),img.getGray(),img.getType());
+    Image result_img(img.getRows(),img.getCols(),img.getGray(),img.getType());
+
+	lowpass = penapis_gaussian(img);
+    highpass = substraction(img, lowpass);
+    result_img = addition(multiplication(img, alpha -1), highpass);
+    
+    return result_img;
+}
+
 // int main(){
 //     Image image = readPPM("ppm_sample.ppm");
 //     writePPM("new.ppm",histogram(image));
