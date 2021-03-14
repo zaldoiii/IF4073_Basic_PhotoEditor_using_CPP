@@ -891,6 +891,66 @@ Image highboost(Image img, double alpha){
     return result_img;
 }
 
+/*
+selection sort
+*/
+void sorting(int a[], int n) {
+    int i, j, min, temp;
+    for (i = 0; i < n - 1; i++) {
+        min = i;
+        for (j = i + 1; j < n; j++)
+            if (a[j] < a[min])
+                min = j;
+        temp = a[i];
+        a[i] = a[min];
+        a[min] = temp;
+    }
+}
+
+/*
+penapis lolos tinggi median
+*/
+Image penapisMedian(Image img, int rows_filter, int cols_filter){
+    Image result_img(img.getRows(),img.getCols(),img.getGray(),img.getType());
+    int x, y;
+
+    for (int k = 0; k < 3; k++) {
+        for (int i = 0; i < result_img.getRows(); i++) {
+            for (int j = 0; j < result_img.getCols(); j++) {
+                result_img.setCell(k,i,j,img.getCell(k,i,j));
+            }
+        }
+    }    
+     
+
+    if (rows_filter % 2 == 1 && cols_filter == 1){
+        for (int i = rows_filter/2; i < img.getRows() - rows_filter/2; i++)
+        {
+            for (int j = cols_filter/2; j < img.getCols() - cols_filter/2; j++)
+            {
+                x = i-1;
+                y = j-1;
+                int convolute[rows_filter*cols_filter] = {0};
+
+                for (int k = 0; k < rows_filter; k++)
+                {
+                    for (int l = 0; l < cols_filter; l++)
+                    {
+                        convolute[k*cols_filter+l] = input[x][y];
+                        y++; // Move right.
+                    }
+                    x++; // Move down.
+                    y = j-1; // Restart column position
+                }
+                sorting(convolute,rows_filter*cols_filter);
+                result_img.setCell(k,i,j,convolute[rows_filter*cols_filter/2]);
+            }
+        }
+    }
+
+    return result_img;
+}
+
 // int main(){
 //     Image image = readPPM("ppm_sample.ppm");
 //     writePPM("new.ppm",histogram(image));
