@@ -865,7 +865,7 @@ Image unsharpMasking(Image img){
 
 Image multiplication(Image img, double factor){
     Image result_img(img.getRows(),img.getCols(),img.getGray(),img.getType());
-    unsigned char tmp;
+    double tmp;
     for (int k = 0; k < 3; k++) {
         for (int i = 0; i < result_img.getRows(); i++) {
             for (int j = 0; j < result_img.getCols(); j++) {
