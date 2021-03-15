@@ -1,0 +1,45 @@
+﻿  GUIProgram.cpp
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\source\format.cpp(20,11): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\source\format.cpp(47,10): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\source\format.cpp(53,10): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\source\format.cpp(92,10): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\source\format.cpp(134,10): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\source\format.cpp(161,9): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\source\format.cpp(167,9): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\source\format.cpp(207,10): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\source\format.cpp(242,16): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\source\format.cpp(241,9): warning C4101: 'i': unreferenced local variable
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\source\format.cpp(282,16): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\source\format.cpp(319,10): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\source\format.cpp(377,10): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\source\format.cpp(404,9): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\source\format.cpp(373,18): warning C4101: 'rgb_comp_color': unreferenced local variable
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\source\format.cpp(453,10): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\source\function.cpp(108,46): warning C4244: '=': conversion from 'double' to 'unsigned char', possible loss of data
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\source\function.cpp(111,48): warning C4244: '=': conversion from 'double' to 'unsigned char', possible loss of data
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\source\function.cpp(138,42): warning C4244: 'argument': conversion from 'double' to 'unsigned char', possible loss of data
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\source\function.cpp(156,42): warning C4244: 'argument': conversion from 'double' to 'unsigned char', possible loss of data
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\source\function.cpp(174,42): warning C4244: 'argument': conversion from 'double' to 'unsigned char', possible loss of data
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\source\function.cpp(257,27): warning C4101: 'temp': unreferenced local variable
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\source\function.cpp(286,27): warning C4101: 'temp': unreferenced local variable
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\source\function.cpp(315,27): warning C4101: 'temp': unreferenced local variable
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\source\function.cpp(506,33): warning C4244: '=': conversion from 'double' to 'unsigned char', possible loss of data
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\source\function.cpp(574,19): warning C4101: 'tmp': unreferenced local variable
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\source\function.cpp(601,29): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\source\function.cpp(636,29): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\source\function.cpp(658,29): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\source\function.cpp(730,47): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\GUIProgram.h(1713,99): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\GUIProgram.h(1713,91): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\GUIProgram.h(1722,130): warning C4244: 'argument': conversion from 'double' to 'unsigned char', possible loss of data
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\GUIProgram.h(1722,122): warning C4244: 'argument': conversion from 'double' to 'unsigned char', possible loss of data
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\GUIProgram.h(1722,98): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\GUIProgram.h(1722,90): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\GUIProgram.h(1731,90): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\GUIProgram.h(1731,80): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\GUIProgram.cpp(8,38): warning C4829: Possibly incorrect parameters to function main. Consider 'int main(Platform::Array<Platform::String^>^ argv)'
+  .NETFramework,Version=v4.6.1.AssemblyAttributes.cpp
+  Generating Code...
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\source\function.cpp(653): warning C4172: returning address of local variable or temporary: normalized_histogram
+  GUIProgram.obj : MSIL module encountered; incremental linking is disabled for MSIL; performing full link
+  if4073-2021-tubes1-kelD.vcxproj -> D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\Debug\if4073-2021-tubes1-kelD.exe

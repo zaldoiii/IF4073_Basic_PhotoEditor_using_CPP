@@ -25,6 +25,7 @@
     <Keyword>ManagedCProj</Keyword>
     <RootNamespace>MiniPhotoshop3</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>if4073-2021-tubes1-kelD</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -121,22 +122,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GUIProgram.cpp" />
-    <ClCompile Include="PhotoViewer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GUIProgram.h">
-      <FileType>CppForm</FileType>
-    </ClInclude>
-    <ClInclude Include="PhotoViewer.h">
       <FileType>CppForm</FileType>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="GUIProgram.resx">
       <DependentUpon>GUIProgram.h</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PhotoViewer.resx">
-      <DependentUpon>PhotoViewer.h</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

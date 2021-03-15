@@ -4,7 +4,7 @@
 #include "source/function.cpp"
 #include <string>
 
-namespace MiniPhotoshop3
+namespace CustomPhotoEditor
 {
 	using namespace System;
 	using namespace System::IO;
@@ -77,6 +77,7 @@ namespace MiniPhotoshop3
 	private: System::Windows::Forms::Button^ openPBMButton;
 	private: System::Windows::Forms::Button^ openPGMButton;
 	private: System::Windows::Forms::Button^ openBMPButton;
+	private: System::Windows::Forms::Button^ openRAWButton;
 
 	private: System::Windows::Forms::Button^ toNegativeButton;
 	private: System::Windows::Forms::Button^ toGraysButton;
@@ -183,6 +184,7 @@ namespace MiniPhotoshop3
 			this->openPBMButton = (gcnew System::Windows::Forms::Button());
 			this->openPGMButton = (gcnew System::Windows::Forms::Button());
 			this->openBMPButton = (gcnew System::Windows::Forms::Button());
+			this->openRAWButton = (gcnew System::Windows::Forms::Button());
 			this->toEditorButton = (gcnew System::Windows::Forms::Button());
 			this->saveTempButton = (gcnew System::Windows::Forms::Button());
 			this->showHistogramButton = (gcnew System::Windows::Forms::Button());
@@ -274,10 +276,11 @@ namespace MiniPhotoshop3
 			this->openPBMButton->TabIndex = 4;
 			this->openPBMButton->Text = L"Open PBM";
 			this->openPBMButton->UseVisualStyleBackColor = true;
+			this->openPBMButton->Click += gcnew System::EventHandler(this, &GUIProgram::openPBMButton_Click);
 			// 
 			// openPGMButton
 			// 
-			this->openPGMButton->Location = System::Drawing::Point(0, 27);
+			this->openPGMButton->Location = System::Drawing::Point(0, 28);
 			this->openPGMButton->Name = L"openPGMButton";
 			this->openPGMButton->Size = System::Drawing::Size(80, 23);
 			this->openPGMButton->TabIndex = 5;
@@ -287,17 +290,27 @@ namespace MiniPhotoshop3
 			// 
 			// openBMPButton
 			// 
-			this->openBMPButton->Location = System::Drawing::Point(0, 85);
+			this->openBMPButton->Location = System::Drawing::Point(0, 84);
 			this->openBMPButton->Name = L"openBMPButton";
 			this->openBMPButton->Size = System::Drawing::Size(80, 23);
 			this->openBMPButton->TabIndex = 6;
 			this->openBMPButton->Text = L"Open BMP";
 			this->openBMPButton->UseVisualStyleBackColor = true;
 			this->openBMPButton->Click += gcnew System::EventHandler(this, &GUIProgram::openBMPButton_Click);
+			//
+			// openRAWButton
+			// 
+			this->openRAWButton->Location = System::Drawing::Point(0, 112);
+			this->openRAWButton->Name = L"openRAWButton";
+			this->openRAWButton->Size = System::Drawing::Size(80, 23);
+			this->openRAWButton->TabIndex = 101;
+			this->openRAWButton->Text = L"Open RAW";
+			this->openRAWButton->UseVisualStyleBackColor = true;
+			this->openRAWButton->Click += gcnew System::EventHandler(this, &GUIProgram::openRAWButton_Click);
 			// 
 			// toEditorButton
 			// 
-			this->toEditorButton->Location = System::Drawing::Point(0, 131);
+			this->toEditorButton->Location = System::Drawing::Point(0, 180);
 			this->toEditorButton->Name = L"toEditorButton";
 			this->toEditorButton->Size = System::Drawing::Size(80, 40);
 			this->toEditorButton->TabIndex = 46;
@@ -311,14 +324,14 @@ namespace MiniPhotoshop3
 			this->saveTempButton->Name = L"saveTempButton";
 			this->saveTempButton->Size = System::Drawing::Size(80, 23);
 			this->saveTempButton->TabIndex = 47;
-			this->saveTempButton->Text = L"Save as ...";
+			this->saveTempButton->Text = L"Save";
 			this->saveTempButton->UseVisualStyleBackColor = true;
 			this->saveTempButton->Visible = false;
 			this->saveTempButton->Click += gcnew System::EventHandler(this, &GUIProgram::saveTempButton_Click);
 			// 
 			// showHistogramButton
 			// 
-			this->showHistogramButton->Location = System::Drawing::Point(0, 221);
+			this->showHistogramButton->Location = System::Drawing::Point(0, 270);
 			this->showHistogramButton->Name = L"showHistogramButton";
 			this->showHistogramButton->Size = System::Drawing::Size(80, 37);
 			this->showHistogramButton->TabIndex = 39;
@@ -329,7 +342,7 @@ namespace MiniPhotoshop3
 			// 
 			// discardButton
 			// 
-			this->discardButton->Location = System::Drawing::Point(0, 177);
+			this->discardButton->Location = System::Drawing::Point(0, 225);
 			this->discardButton->Name = L"discardButton";
 			this->discardButton->Size = System::Drawing::Size(80, 38);
 			this->discardButton->TabIndex = 38;
@@ -1097,6 +1110,7 @@ namespace MiniPhotoshop3
 			this->Controls->Add(this->imgAddButton);
 			this->Controls->Add(this->toGraysButton);
 			this->Controls->Add(this->toNegativeButton);
+			this->Controls->Add(this->openRAWButton);
 			this->Controls->Add(this->openBMPButton);
 			this->Controls->Add(this->openPGMButton);
 			this->Controls->Add(this->openPBMButton);
@@ -1290,22 +1304,23 @@ namespace MiniPhotoshop3
 			this->formatStatus = 1;
 
 			this->dialog->FileName = "";
-			this->toEditorButton->Visible = true;
-			this->saveTempButton->Visible = true;
-			this->showHistogramButton->Visible = true;
 			this->dialog->Filter = "PPM files (*.ppm)|*.ppm*";
 			this->dialog->ShowDialog();
-			char* namaFile = (char*)(void*)Marshal::StringToHGlobalAnsi(this->dialog->FileName->Replace('\\', '/'));
+			if (this->dialog->FileName != "")
+			{
+				char* namaFile = (char*)(void*)Marshal::StringToHGlobalAnsi(this->dialog->FileName->Replace('\\', '/'));
+				*this->defaultImg = readPPM(namaFile);
+				*this->dynamicImg = readPPM(namaFile);
+				renderImage(this->defaultImg);
 
-			*this->defaultImg = readPPM(namaFile);
-			*this->dynamicImg = readPPM(namaFile);
-
-			this->discardButton->Visible = true;
-			renderImage(this->defaultImg);
-
-			this->rHistogramViewer->Visible = false;
-			this->gHistogramViewer->Visible = false;
-			this->bHistogramViewer->Visible = false;
+				this->discardButton->Visible = true;
+				this->toEditorButton->Visible = true;
+				this->saveTempButton->Visible = true;
+				this->showHistogramButton->Visible = true;
+				this->rHistogramViewer->Visible = false;
+				this->gHistogramViewer->Visible = false;
+				this->bHistogramViewer->Visible = false;
+			}
 		}
 
 		Void openPGMButton_Click(Object^ sender, EventArgs^ e)
@@ -1317,27 +1332,52 @@ namespace MiniPhotoshop3
 			this->formatStatus = 2;
 
 			this->dialog->FileName = "";
-			this->toEditorButton->Visible = true;
-			this->saveTempButton->Visible = true;
-			this->showHistogramButton->Visible = true;
 			this->dialog->Filter = "PGM files (*.pgm)|*.pgm*";
 			this->dialog->ShowDialog();
-			char* namaFile = (char*)(void*)Marshal::StringToHGlobalAnsi(this->dialog->FileName->Replace('\\', '/'));
+			if (this->dialog->FileName != "")
+			{
+				char* namaFile = (char*)(void*)Marshal::StringToHGlobalAnsi(this->dialog->FileName->Replace('\\', '/'));
+				*this->defaultImg = readPGM(namaFile);
+				*this->dynamicImg = readPGM(namaFile);
+				renderImage(this->defaultImg);
 
-			*this->defaultImg = readPGM(namaFile);
-			*this->dynamicImg = readPGM(namaFile);
-
-			this->discardButton->Visible = true;
-			renderImage(this->defaultImg);
-
-			this->rHistogramViewer->Visible = false;
-			this->gHistogramViewer->Visible = false;
-			this->bHistogramViewer->Visible = false;
+				this->discardButton->Visible = true;
+				this->toEditorButton->Visible = true;
+				this->saveTempButton->Visible = true;
+				this->showHistogramButton->Visible = true;
+				this->rHistogramViewer->Visible = false;
+				this->gHistogramViewer->Visible = false;
+				this->bHistogramViewer->Visible = false;
+			}
 		}
 
-		/*Void openPBMButton_Click(Object^ sender, EventArgs^ e)
+		Void openPBMButton_Click(Object^ sender, EventArgs^ e)
 		{
-		}*/
+			this->m = 0;
+			this->n = 0;
+			this->moveCount = 0;
+			this->zoomLevel = 0;
+			this->formatStatus = 2;
+
+			this->dialog->FileName = "";
+			this->dialog->Filter = "PBM files (*.pbm)|*.pbm*";
+			this->dialog->ShowDialog();
+			if (this->dialog->FileName != "")
+			{
+				char* namaFile = (char*)(void*)Marshal::StringToHGlobalAnsi(this->dialog->FileName->Replace('\\', '/'));
+				*this->defaultImg = readPBM(namaFile);
+				*this->dynamicImg = readPBM(namaFile);
+				renderImage(this->defaultImg);
+
+				this->discardButton->Visible = true;
+				this->toEditorButton->Visible = true;
+				this->saveTempButton->Visible = true;
+				this->showHistogramButton->Visible = true;
+				this->rHistogramViewer->Visible = false;
+				this->gHistogramViewer->Visible = false;
+				this->bHistogramViewer->Visible = false;
+			}
+		}
 
 		Void openBMPButton_Click(Object^ sender, EventArgs^ e)
 		{
@@ -1348,22 +1388,51 @@ namespace MiniPhotoshop3
 			this->formatStatus = 1;
 
 			this->dialog->FileName = "";
-			this->toEditorButton->Visible = true;
-			this->saveTempButton->Visible = true;
-			this->showHistogramButton->Visible = true;
 			this->dialog->Filter = "BMP files (*.bmp)|*.bmp*";
 			this->dialog->ShowDialog();
-			char* namaFile = (char*)(void*)Marshal::StringToHGlobalAnsi(this->dialog->FileName->Replace('\\', '/'));
+			if (this->dialog->FileName != "")
+			{
+				char* namaFile = (char*)(void*)Marshal::StringToHGlobalAnsi(this->dialog->FileName->Replace('\\', '/'));
+				*this->defaultImg = readBMP(namaFile);
+				*this->dynamicImg = readBMP(namaFile);
+				renderImage(this->defaultImg);
 
-			*this->defaultImg = readBMP(namaFile);
-			*this->dynamicImg = readBMP(namaFile);
+				this->discardButton->Visible = true;
+				this->toEditorButton->Visible = true;
+				this->saveTempButton->Visible = true;
+				this->showHistogramButton->Visible = true;
+				this->rHistogramViewer->Visible = false;
+				this->gHistogramViewer->Visible = false;
+				this->bHistogramViewer->Visible = false;
+			}
+		}
 
-			this->discardButton->Visible = true;
-			renderImage(this->defaultImg);
+		Void openRAWButton_Click(Object^ sender, EventArgs^ e)
+		{
+			this->m = 0;
+			this->n = 0;
+			this->moveCount = 0;
+			this->zoomLevel = 0;
+			this->formatStatus = 1;
 
-			this->rHistogramViewer->Visible = false;
-			this->gHistogramViewer->Visible = false;
-			this->bHistogramViewer->Visible = false;
+			this->dialog->FileName = "";
+			this->dialog->Filter = "BMP files (*.bmp)|*.bmp*";
+			this->dialog->ShowDialog();
+			if (this->dialog->FileName != "")
+			{
+				char* namaFile = (char*)(void*)Marshal::StringToHGlobalAnsi(this->dialog->FileName->Replace('\\', '/'));
+				*this->defaultImg = readPBM(namaFile);
+				*this->dynamicImg = readPBM(namaFile);
+				renderImage(this->defaultImg);
+
+				this->discardButton->Visible = true;
+				this->toEditorButton->Visible = true;
+				this->saveTempButton->Visible = true;
+				this->showHistogramButton->Visible = true;
+				this->rHistogramViewer->Visible = false;
+				this->gHistogramViewer->Visible = false;
+				this->bHistogramViewer->Visible = false;
+			}
 		}
 
 		Void saveTempButton_Click(Object^ sender, EventArgs^ e)
@@ -1516,8 +1585,8 @@ namespace MiniPhotoshop3
 		Void imgAddButton_Click(Object^ sender, EventArgs^ e)
 		{
 			openSecondaryImg();
-			*this->combinedImg = addition(*this->dynamicImg, *this->secondaryImg);
-			renderImage(this->combinedImg);
+			*this->dynamicImg = addition(*this->dynamicImg, *this->secondaryImg);
+			continousEdit();
 			inverseVisibility();
 		}
 
@@ -1539,8 +1608,8 @@ namespace MiniPhotoshop3
 		Void operANDButton_Click(Object^ sender, EventArgs^ e)
 		{
 			openSecondaryImg();
-			*this->combinedImg = ANDOperation(*this->dynamicImg, *this->secondaryImg);
-			renderImage(this->combinedImg);
+			*this->dynamicImg = ANDOperation(*this->dynamicImg, *this->secondaryImg);
+			continousEdit();
 			inverseVisibility();
 		}
 

@@ -8,6 +8,6 @@ using namespace System::Windows::Forms;
 void main(cli::array<String^>^ args) {
     Application::EnableVisualStyles();
     Application::SetCompatibleTextRenderingDefault(false);
-    MiniPhotoshop3::GUIProgram form;
+    CustomPhotoEditor::GUIProgram form;
     Application::Run(% form);
 }

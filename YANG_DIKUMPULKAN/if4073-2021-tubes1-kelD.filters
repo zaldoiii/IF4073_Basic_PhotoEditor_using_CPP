@@ -18,15 +18,9 @@
     <ClCompile Include="GUIProgram.cpp">
       <Filter>Header Files</Filter>
     </ClCompile>
-    <ClCompile Include="PhotoViewer.cpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GUIProgram.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PhotoViewer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,0 +1,4 @@
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\Debug\MiniPhotoshop3.GUIProgram.resources
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\Debug\if4073-2021-tubes1-kelD.vcxproj.GenerateResource.cache
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\Debug\if4073-2021-tubes1-kelD.exe
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3_BAK\Debug\if4073-2021-tubes1-kelD.pdb

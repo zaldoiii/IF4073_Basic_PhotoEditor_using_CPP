@@ -652,10 +652,65 @@ float* histogram(Image img, int warna)
 
     return normalized_histogram;
 }
+Image specifiedHistogramEqualization(Image img, float spec[256])
+{
+    Image result_img(img.getRows(), img.getCols(), img.getGray(), img.getType());
+    float image_pixel_count = img.getRows() * img.getCols();
+
+    for (int k = 0; k < 3; k++) {
+        // create frequency histogram
+        int freq[256];
+        for (int i = 0; i < 256; i++) {
+            freq[i] = 0;
+        }
+        for (int i = 0; i < img.getRows(); i++) {
+            for (int j = 0; j < img.getCols(); j++) {
+                freq[(int)img.getCell(k, i, j)] += 1;
+            }
+        }
+
+        // histogram equalization
+        float sum = 0.0;
+        int new_hist[256];
+        for (int i = 0; i < 256; i++) {
+            sum = sum + freq[i];
+            new_hist[i] = (int)floor((255 * sum) / image_pixel_count);
+        }
+
+        sum = 0.0;
+        int new_spec_hist[256];
+        for (int i = 0; i < 256; i++) {
+            sum = sum + spec[i];
+            new_spec_hist[i] = (int)floor((255 * sum) / image_pixel_count);
+        }
+
+        int minval, minj;
+        int inv_hist[256];
+        for (int i = 0; i <= 255; i++) {
+            minval = abs(new_hist[i] - new_spec_hist[0]);
+            minj = 0;
+            for (int j = 0; j <= 255; j++) {
+                if (abs(new_hist[i] - new_spec_hist[j]) < minval) {
+                    minval = abs(new_hist[i] - new_spec_hist[j]);
+                    minj = j;
+                }
+            }
+            inv_hist[i] = minj;
+        }
+
+        // updating image
+        for (int i = 0; i < img.getRows(); i++) {
+            for (int j = 0; j < img.getCols(); j++) {
+                result_img.setCell(k, i, j, (unsigned char)inv_hist[img.getCell(k, i, j)]);
+            }
+        }
+    }
+    return result_img;
+}
 
 Image convolute(Image img, double** kernel, int rows_kernel, int cols_kernel) {
     Image result_img(img.getRows(), img.getCols(), img.getGray(), img.getType());
-    int conv = 0;
+    int convolute = 0;
     int x, y; //img matrix index
     int rows_tmp = img.getRows() - rows_kernel + 1;
     int cols_tmp = img.getCols() - cols_kernel + 1;
@@ -672,22 +727,22 @@ Image convolute(Image img, double** kernel, int rows_kernel, int cols_kernel) {
                 {
                     for (int l = 0; l < cols_kernel; l++)
                     {
-                        conv = conv + kernel[k][l] * img.getCell(k, x, y);
+                        convolute = convolute + kernel[k][l] * img.getCell(k, x, y);
                         y++; // Move right.
                     }
                     x++; // Move down.
                     y = j; // Restart column position
                 }
-                if (conv < 0) {
+                if (convolute < 0) {
                     tmp[i][j] = 0;
                 }
                 else {
-                    if (conv > 255)
+                    if (convolute > 255)
                         tmp[i][j] = 255;
                     else
-                        tmp[i][j] = conv;
+                        tmp[i][j] = convolute;
                 }
-                conv = 0;
+                convolute = 0;
             }
         }
         for (int i = 0; i < img.getRows(); i++)
@@ -710,5 +765,172 @@ Image convolute(Image img, double** kernel, int rows_kernel, int cols_kernel) {
             }
         }
     }
+    return result_img;
+}
+
+/*
+Penapis rata-rata
+*/
+Image penapis_mean(Image img, double** kernel, int rows_kernel, int cols_kernel) {
+    Image result_img(img.getRows(), img.getCols(), img.getGray(), img.getType());
+    double** kernel_mean = createMatrix(rows_kernel, cols_kernel, 0.0);
+
+    for (int i = 0; i < rows_kernel; i++) {
+        for (int j = 0; j < cols_kernel; j++) {
+            kernel_mean[i][j] = kernel[i][j] / (rows_kernel * cols_kernel);
+        }
+    }
+
+    result_img = convolute(img, kernel_mean, rows_kernel, cols_kernel);
+    return result_img;
+}
+
+/*
+Penapis gaussian
+*/
+Image penapis_gaussian(Image img) {
+    Image result_img(img.getRows(), img.getCols(), img.getGray(), img.getType());
+    double** kernel = createMatrix(3, 3, 1.0);
+    kernel[0][0] = 1.0 / 16;
+    kernel[0][1] = 1.0 / 8;
+    kernel[0][2] = 1.0 / 16;
+    kernel[1][0] = 1.0 / 8;
+    kernel[1][1] = 1.0 / 4;
+    kernel[1][2] = 1.0 / 8;
+    kernel[2][0] = 1.0 / 16;
+    kernel[2][1] = 1.0 / 8;
+    kernel[2][2] = 1.0 / 16;
+
+
+    result_img = convolute(img, kernel, 3, 3);
+    return result_img;
+}
+
+/*
+penapis lolos tinggi
+*/
+Image highpass(Image img) {
+    Image result_img(img.getRows(), img.getCols(), img.getGray(), img.getType());
+    double** kernel = createMatrix(3, 3, 1.0);
+    kernel[0][0] = -1;
+    kernel[0][1] = -1;
+    kernel[0][2] = -1;
+    kernel[1][0] = -1;
+    kernel[1][1] = 8;
+    kernel[1][2] = -1;
+    kernel[2][0] = -1;
+    kernel[2][1] = -1;
+    kernel[2][2] = -1;
+
+
+    result_img = convolute(img, kernel, 3, 3);
+    return result_img;
+}
+
+/*
+penapis lolos tinggi unsharp masking
+*/
+Image unsharpMasking(Image img) {
+    Image lowpass(img.getRows(), img.getCols(), img.getGray(), img.getType());
+    Image highpass(img.getRows(), img.getCols(), img.getGray(), img.getType());
+    Image result_img(img.getRows(), img.getCols(), img.getGray(), img.getType());
+
+    lowpass = penapis_gaussian(img);
+    highpass = substraction(img, lowpass);
+    result_img = addition(img, highpass);
+
+    return result_img;
+}
+
+Image multiplication(Image img, double factor) {
+    Image result_img(img.getRows(), img.getCols(), img.getGray(), img.getType());
+    double tmp;
+    for (int k = 0; k < 3; k++) {
+        for (int i = 0; i < result_img.getRows(); i++) {
+            for (int j = 0; j < result_img.getCols(); j++) {
+                tmp = (double)img.getCell(k, i, j) * factor;
+                result_img.setCell(k, i, j, (unsigned char)tmp);
+            }
+        }
+    }
+    return result_img;
+}
+/*
+penapis lolos tinggi highboost
+*/
+Image highboost(Image img, double alpha) {
+    Image lowpass(img.getRows(), img.getCols(), img.getGray(), img.getType());
+    Image highpass(img.getRows(), img.getCols(), img.getGray(), img.getType());
+    Image result_img(img.getRows(), img.getCols(), img.getGray(), img.getType());
+
+    lowpass = penapis_gaussian(img);
+    highpass = substraction(img, lowpass);
+    result_img = addition(multiplication(img, alpha - 1), highpass);
+
+    return result_img;
+}
+
+/*
+selection sort
+*/
+void sorting(int a[], int n) {
+    int i, j, min, temp;
+    for (i = 0; i < n - 1; i++) {
+        min = i;
+        for (j = i + 1; j < n; j++)
+            if (a[j] < a[min])
+                min = j;
+        temp = a[i];
+        a[i] = a[min];
+        a[min] = temp;
+    }
+}
+
+/*
+penapis lolos tinggi median
+*/
+Image penapisMedian(Image img, int rows_filter, int cols_filter) {
+    Image result_img(img.getRows(), img.getCols(), img.getGray(), img.getType());
+    int x, y;
+
+    for (int k = 0; k < 3; k++) {
+        for (int i = 0; i < result_img.getRows(); i++) {
+            for (int j = 0; j < result_img.getCols(); j++) {
+                result_img.setCell(k, i, j, img.getCell(k, i, j));
+            }
+        }
+    }
+
+
+    if (rows_filter % 2 == 1 && cols_filter == 1) {
+        for (int k = 0; k < 3; k++) {
+            for (int i = rows_filter / 2; i < img.getRows() - rows_filter / 2; i++)
+            {
+                for (int j = cols_filter / 2; j < img.getCols() - cols_filter / 2; j++)
+                {
+                    x = i - 1;
+                    y = j - 1;
+
+                    int* convolute = new int[rows_filter * cols_filter];
+
+                    for (int a = 0; a < rows_filter; a++)
+                    {
+                        for (int b = 0; b < cols_filter; b++)
+                        {
+                            convolute[a * cols_filter + b] = (int)img.getCell(k, i, j);
+                            y++; // Move right.
+                        }
+                        x++; // Move down.
+                        y = j - 1; // Restart column position
+                    }
+                    sorting(convolute, rows_filter * cols_filter);
+                    result_img.setCell(k, i, j, (unsigned char)convolute[rows_filter * cols_filter / 2]);
+
+                    delete[] convolute;
+                }
+            }
+        }
+    }
+
     return result_img;
 }

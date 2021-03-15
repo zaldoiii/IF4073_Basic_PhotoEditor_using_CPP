@@ -1,7 +1,6 @@
   MiniPhotoshop3.GUIProgram.resources - Embedded, ContainedInManifestFile, 
-  MiniPhotoshop3.PhotoViewer.resources - Embedded, ContainedInManifestFile, 
 ImageRuntimeVersion: v4.0.30319
-Assembly Mini_Photoshop_3, Version=0.0.*, Culture=Invariant Language (Invariant Country): 
+Assembly if4073-2021-tubes1-kelD, Version=0.0.*, Culture=Invariant Language (Invariant Country): 
 	hash=SHA1, flags=PublicKey
 Assembly mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
 	hash=None, flags=None
@@ -15,7 +14,7 @@ Assembly System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=
 	hash=None, flags=None
 Assembly System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
 	hash=None, flags=None
-Class MiniPhotoshop3.GUIProgram: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+Class CustomPhotoEditor.GUIProgram: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.Form
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
   Fields:
@@ -24,6 +23,3 @@ Class MiniPhotoshop3.GUIProgram: AutoLayout, AnsiClass, Class, Public, BeforeFie
     Custom.Image* renderedImg : Public
     Custom.Image* secondaryImg : Public
     Custom.Image* combinedImg : Public
-Class MiniPhotoshop3.PhotoViewer: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
-  :System.Windows.Forms.Form
-    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
