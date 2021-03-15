@@ -946,6 +946,8 @@ Image penapisMedian(Image img, int rows_filter, int cols_filter){
                     }
                     sorting(convolute,rows_filter*cols_filter);
                     result_img.setCell(k,i,j,(unsigned char)convolute[rows_filter*cols_filter/2]);
+
+                    delete[] convolute;
                 }
             }
         }
