@@ -21,8 +21,7 @@ D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3\source\f
 D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3\source\function.cpp(574,19): warning C4101: 'tmp': unreferenced local variable
 D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3\source\function.cpp(601,29): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
 D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3\source\function.cpp(636,29): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3\source\function.cpp(661,30): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3\source\function.cpp(686,37): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3\source\function.cpp(675,37): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
 D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3\GUIProgram.h(1644,99): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
 D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3\GUIProgram.h(1644,91): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
 D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3\GUIProgram.h(1653,130): warning C4244: 'argument': conversion from 'double' to 'unsigned char', possible loss of data
@@ -33,6 +32,5 @@ D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3\GUIProgr
 D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3\GUIProgram.h(1662,80): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
 D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3\GUIProgram.cpp(8,38): warning C4829: Possibly incorrect parameters to function main. Consider 'int main(Platform::Array<Platform::String^>^ argv)'
 D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3\source\function.cpp(653): warning C4172: returning address of local variable or temporary: normalized_histogram
-D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3\source\function.cpp(664): warning C4172: returning address of local variable or temporary: Nr
   GUIProgram.obj : MSIL module encountered; incremental linking is disabled for MSIL; performing full link
   Mini_Photoshop_3.vcxproj -> D:\Tugas IF\IF4073 - Interpretasi dan Pengolahan Citra\Mini_Photoshop_3\Debug\Mini_Photoshop_3.exe

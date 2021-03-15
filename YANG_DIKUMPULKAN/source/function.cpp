@@ -653,17 +653,6 @@ float* histogram(Image img, int warna)
     return normalized_histogram;
 }
 
-float* cekRandom()
-{
-    float Nr[2048];
-    for (int i = 0; i < 256; i++)
-    {
-        if (i < 100) Nr[i] = i;
-        else Nr[i] = 100;
-    }
-    return Nr;
-}
-
 Image convolute(Image img, double** kernel, int rows_kernel, int cols_kernel) {
     Image result_img(img.getRows(), img.getCols(), img.getGray(), img.getType());
     int conv = 0;
