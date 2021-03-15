@@ -19,16 +19,18 @@ Image readBMP(const char *filename)
     int x = *(int*)&info[18];
     int y = *(int*)&info[22];
 
-    // unsigned char info2[84];
-    // fread(info2, sizeof(unsigned char), 84, fp); 
-    int row_padded = (x*3 + 3) & (~3);
+    int buff2 = (int)*(int*)&info[10] - 54;
+    
+    unsigned char* info2;
+    info2 = (unsigned char*)malloc(buff2 * sizeof(unsigned char));
+    fread(info2, sizeof(unsigned char),buff2, fp); 
 
     unsigned char *temp;
     temp = (unsigned char*)malloc(3* x * sizeof(unsigned char));
     Image img(y, x, RGB_COMPONENT_COLOR,2);
 
     for (int i=img.getRows()-1; i>=0; i--)  {
-        fread(temp, sizeof(temp[0]), row_padded, fp);
+        fread(temp, sizeof(temp[0]), 3* x, fp);
         for (int j = img.getCols()-1; j >= 0 ; j--) {
             img.setCell(2,i,j,temp[(img.getCols()-1-j)*3]);
             img.setCell(1,i,j,temp[(img.getCols()-1-j)*3+1]);
@@ -80,7 +82,7 @@ void writePPM(const char *filename, Image img)
     fclose(fp);
 }
 
-int main(){
-    Image image = readBMP("tt.bmp");
-    writePPM("bmp_result.ppm",image);
-}
+// int main(){
+//     Image image = readBMP("bmp_sample.bmp");
+//     writePPM("bmp_result.ppm",image);
+// }
