@@ -924,26 +924,28 @@ Image penapisMedian(Image img, int rows_filter, int cols_filter){
      
 
     if (rows_filter % 2 == 1 && cols_filter == 1){
-        for (int i = rows_filter/2; i < img.getRows() - rows_filter/2; i++)
-        {
-            for (int j = cols_filter/2; j < img.getCols() - cols_filter/2; j++)
+        for (int k = 0; k < 3; k++){
+            for (int i = rows_filter/2; i < img.getRows() - rows_filter/2; i++)
             {
-                x = i-1;
-                y = j-1;
-                int convolute[rows_filter*cols_filter] = {0};
-
-                for (int k = 0; k < rows_filter; k++)
+                for (int j = cols_filter/2; j < img.getCols() - cols_filter/2; j++)
                 {
-                    for (int l = 0; l < cols_filter; l++)
+                    x = i-1;
+                    y = j-1;
+                    int convolute[rows_filter*cols_filter] = {0};
+
+                    for (int k = 0; k < rows_filter; k++)
                     {
-                        convolute[k*cols_filter+l] = input[x][y];
-                        y++; // Move right.
+                        for (int l = 0; l < cols_filter; l++)
+                        {
+                            convolute[k*cols_filter+l] = (int)img.getCell(k,i,j);
+                            y++; // Move right.
+                        }
+                        x++; // Move down.
+                        y = j-1; // Restart column position
                     }
-                    x++; // Move down.
-                    y = j-1; // Restart column position
+                    sorting(convolute,rows_filter*cols_filter);
+                    result_img.setCell(k,i,j,(unsigned char)convolute[rows_filter*cols_filter/2]);
                 }
-                sorting(convolute,rows_filter*cols_filter);
-                result_img.setCell(k,i,j,convolute[rows_filter*cols_filter/2]);
             }
         }
     }
