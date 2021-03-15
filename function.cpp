@@ -933,11 +933,11 @@ Image penapisMedian(Image img, int rows_filter, int cols_filter){
                     y = j-1;
                     int convolute[rows_filter*cols_filter] = {0};
 
-                    for (int k = 0; k < rows_filter; k++)
+                    for (int a = 0; a < rows_filter; a++)
                     {
-                        for (int l = 0; l < cols_filter; l++)
+                        for (int b = 0; b < cols_filter; b++)
                         {
-                            convolute[k*cols_filter+l] = (int)img.getCell(k,i,j);
+                            convolute[a*cols_filter+b] = (int)img.getCell(k,i,j);
                             y++; // Move right.
                         }
                         x++; // Move down.
