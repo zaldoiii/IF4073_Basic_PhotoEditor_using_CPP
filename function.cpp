@@ -913,6 +913,8 @@ penapis lolos tinggi median
 Image penapisMedian(Image img, int rows_filter, int cols_filter){
     Image result_img(img.getRows(),img.getCols(),img.getGray(),img.getType());
     int x, y;
+    const int const_row = rows_filter;
+    const int const_col = cols_filter;
 
     for (int k = 0; k < 3; k++) {
         for (int i = 0; i < result_img.getRows(); i++) {
@@ -931,7 +933,7 @@ Image penapisMedian(Image img, int rows_filter, int cols_filter){
                 {
                     x = i-1;
                     y = j-1;
-                    int convolute[rows_filter*cols_filter] = {0};
+                    int convolute[const_row*const_col] = {0};
 
                     for (int a = 0; a < rows_filter; a++)
                     {
