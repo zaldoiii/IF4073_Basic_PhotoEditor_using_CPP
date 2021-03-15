@@ -4,124 +4,107 @@
 #include<iostream>
 using namespace std;
 
-typedef struct foo
+//read image from pbm file
+Image readPBM(const char *filename)
 {
-    unsigned char x;
-} PPMPixel;
+     char buff[16];
+     FILE *fp;
+     int x, y, c, rgb_comp_color;
+     unsigned char *temp;
+     
+     //open PbM file for reading
+     fp = fopen(filename, "rb");
+     if (!fp) {
+          cout<<"Unable to open file '%s'\n";
+          exit(1);
+     }
 
-typedef struct {
-     int x, y;
-     PPMPixel *data;
-} PBMImage;
+     //read image format
+     if (!fgets(buff, sizeof(buff), fp)) {
+          perror(filename);
+          exit(1);
+     }
 
-static PBMImage *readPBM(const char *filename)
-{
-         char buff[16];
-         PBMImage *img;
-         FILE *fp;
-         int c;
-         //open PBM file for reading
-         fp = fopen(filename, "rb");
-         if (!fp) {
-              cout<<"Unable to open file '%s'\n";
-              exit(1);
-         }
+     //check the image format
+     if (buff[0] != 'P' || buff[1] != '4') {
+          cout<<"Invalid image format must be PBM\n";
+          exit(1);
+     }
 
-         //read image format
-         if (!fgets(buff, sizeof(buff), fp)) {
-              perror(filename);
-              exit(1);
-         }
+     //check for comments
+     c = getc(fp);
+     while (c == '#') {
+     while (getc(fp) != '\n') ;
+          c = getc(fp);
+     }
 
-    //check the image format
-    if (buff[0] != 'P' || buff[1] != '4') {
-         cout<<"Invalid image format must be PBM\n";
-         exit(1);
-    }
+     ungetc(c, fp);
+     //read image size information
+     if (fscanf(fp, "%d %d", &x, &y) != 2) {
+          cout<<"Invalid image size (error loading '%s')\n";
+          exit(1);
+     }
 
-    //alloc memory form image
-    img = (PBMImage *)malloc(sizeof(PBMImage));
-    if (!img) {
-         cout<<"Unable to allocate memory\n";
-         exit(1);
-    }
+     while (fgetc(fp) != '\n') ;
+     //memory allocation for pixel data
+     temp = (unsigned char*)malloc(x * sizeof(unsigned char));
+     Image img(y, x, 2,1);
 
-    //check for comments
-    c = getc(fp);
-    while (c == '#') {
-    while (getc(fp) != '\n') ;
-         c = getc(fp);
-    }
+     if (!img.getMatriks()) {
+          cout<<"Unable to allocate memory\n";
+          exit(1);
+     }
+     
+     for (int i=0; i<img.getRows(); ++i)  {
+          fread(temp, sizeof(temp[0]), img.getCols(), fp);
+          for (int j = 0; j < img.getCols(); j++) {
+               cout<<(int)temp[j]<<" ";
+               img.setCell(0,i,j,temp[j]);
+               img.setCell(1,i,j,temp[j]);
+               img.setCell(2,i,j,temp[j]);
+          } 
+          cout<<"\n";
+     }
+     
+     fclose(fp);
 
-    ungetc(c, fp);
-    //read image size information
-    if (fscanf(fp, "%d %d", &img->x, &img->y) != 2) {
-         cout<<"Invalid image size (error loading '%s')\n";
-         exit(1);
-    }
-
-    while (fgetc(fp) != '\n') ;
-    //memory allocation for pixel data
-    img->data = (PPMPixel*)malloc(img->x * img->y * sizeof(PPMPixel));
-
-    if (!img) {
-         cout<<"Unable to allocate memory\n";
-         exit(1);
-    }
-
-    //read pixel data from file
-    cout<<sizeof(PPMPixel);
-    if (fread(img->data, img->x, img->y, fp) != img->y) {
-         cout<<"Error loading image '%s'\n";
-        //  exit(1);
-    }
-
-    fclose(fp);
-    return img;
+     return img;
 }
 
-//Save File to PBM
-void writePBM(const char *filename, PBMImage *img)
+//save Image image to pbm file
+void writePBM(const char *filename, Image img)
 {
-    FILE *fp;
-    //open file for output
-    fp = fopen(filename, "wb");
-    if (!fp) {
-         cout<<"Unable to open file '%s'\n";
-         exit(1);
-    }
+     FILE *fp;
+     //open file for output
+     fp = fopen(filename, "wb");
+     if (!fp) {
+          cout<<"Unable to open file '%s'\n";
+          exit(1);
+     }
 
-    //write the header file
-    //image format
-    fprintf(fp, "P4\n");
+     //write the header file
+     //image format
+     fprintf(fp, "P4\n");
 
-    //image size
-    fprintf(fp, "%d %d\n",img->x,img->y);
-    cout<<"Size: "<<img->x<<"x"<<img->y<<"\n";
+     //image size
+     fprintf(fp, "%d %d\n", img.getCols(), img.getRows());
+     cout<<"Size: "<<img.getCols()<<"x"<<img.getRows()<<"\n";
 
-    // pixel data
-    fwrite(img->data, img->x, img->y, fp);
-    
+     // pixel data
+     unsigned char *temp;
+     temp = (unsigned char*)malloc(img.getCols() * sizeof(unsigned char));
+     
+     for (int i=0; i<img.getRows(); ++i) {
+          for (int j=0; j<img.getCols(); ++j) {
+               temp[j] = img.getCell(0,i,j); 
+          }
+          fwrite(temp, sizeof(temp[0]), img.getCols(), fp);
+     }
+     
     fclose(fp);
-}
-
-void changeColorPBM(PBMImage *img)
-{
-    int i;
-    if(img){
-
-         for(i=0;i<img->x*img->y;i++){
-              img->data[i].x = 1;
-         }
-    }
 }
 
 int main(){
-    PBMImage *image;
-    image = readPBM("pbm_sample.pbm");
-    changeColorPBM(image);
-
+    Image image = readPBM("pbm_sample.pbm");
     writePBM("pbm_result.pbm",image);
-    cout<<"Press any key...";
-    getchar();
 }
